@@ -4,9 +4,9 @@ For us, it is not all about the CV or titles. The most important for us is to kn
 
 In order to understand all this, we would like you to complete the following challenge. This is a simplified case which illustrates the kinds of situations we have to deal with on a daily basis.
 
-This is a good opportunity to demonstrate your style and your capabilities. It is a way to show us which kind of codes you like to create.
+This is a good opportunity to demonstrate your style and your capabilities. It is a way to show us which kind of code you like to create.
 
-There are no time limitations but we suggest you don't spend more than a few hours on it. We are not looking for a bullet-proof solution but it has to be a elegant, clean, maintainable and intuitive approach.
+There are no time limitations but we suggest you don't spend more than a few hours on it. We are not looking for a bullet-proof solution but it has to be an elegant, clean, maintainable and intuitive approach.
 
 Create it in your own way and use the tools you are most comfortable with. Show us your skills.
 
@@ -14,11 +14,11 @@ Create it in your own way and use the tools you are most comfortable with. Show 
 
 ### The robots' daycare center
 
-People are getting more and more used to having robots around on a day to day basis. They build very strong relationship with them, however robots are also getting old and start to malfunction at one point. When this time comes, they are not self-sufficient anymore and you have to choose between "terminating" them or taking care of them until their vital functions stop working forever.
+Citizens are getting more and more used to having robots around on a day to day basis. They build very strong relationship with them, however robots are also getting old and start to malfunction at one point. When this time comes, they are not self-sufficient anymore and you have to choose between "terminating" them or taking care of them until their vital functions stop working indefinitely.
 
 Taking care of a malfunction robot is a time-consuming task and in our busy society not every person has the time to do so. Thats why we are building the _Robot's daycare center_.
 
-Robot's daycare centers are subsidised by the government and in order to benefit from this program, we need to give government inspectors access to our database of _guests_.
+The robot's daycare centers are subsidised by the government and in order for them to benefit from this program, they need to give government inspectors access to their database of _guests_.
 
 
 ### The inspectors API
@@ -45,7 +45,7 @@ The robot _XX1_ is already in our system and has the following attributes:
 - color: white
 - age: 123years
 
-The inspector checks the robot and decides to update its attributes and sends the following information:
+The inspector checks the robot and decides to update his attributes and sends the following information:
 
 - color: dirty white
 - age: 124years
@@ -64,13 +64,13 @@ The robot _XX1_ now has these attributes:
 
 Be aware that the attributes are not predefined and can be anything on both sides: key and value.
 
-#### _[Show]_ gets the robot's actual attributes
+#### _[Show]_ get a robot's actual attributes
 
-The inspector wants to know more about the actual attributes of a robot
+The inspector wants to know about the actual attributes of a robot
 
 ##### Example
 
-The inspector asks for the robot's _XX1_ and the system responses with the following information:
+The inspector asks for the robot _XX1_ and the system responses with the following information:
 
 - size: 100cm
 - weight: 10kg 
@@ -80,7 +80,7 @@ The inspector asks for the robot's _XX1_ and the system responses with the follo
 - number of eyes: 1
 - number of antennas: 2
 
-#### _[Index]_ gets a list of all the robot's in our database
+#### _[Index]_ get a list of all the robot's in our database
 
 The inspector wants to have an overview of all the robot's in our database.
 
@@ -100,7 +100,7 @@ The inspector makes the call and the system responses with the following informa
 	- name: XX3
 	- last_update: 2113-12-12
 	
-#### _[History]_ gets the robot's attributes changes
+#### _[History]_ get a robot's attributes changes
 
 The inspector is interested in knowing about the evolution of the robot, so he asks for the changes on the attributes that have been done for this specific robot.
 
@@ -128,7 +128,7 @@ The inspector asks for the history of the robot _XX1_, the system responses with
 
 ### The API details
 
-You can make your own decision on the details of your API. You can define the URLs, request methods, headers, response types, response formats etc.
+You can make your own decision on the details of your API. You can define the URLs, request methods, headers, response types, response formats, etc.
 
 You don't even have to follow the information structures showed in the examples above. Use whatever structure you think is best, however just make sure that your proposition includes all the information in the examples.
 
