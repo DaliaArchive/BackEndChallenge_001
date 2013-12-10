@@ -12,7 +12,7 @@ Create it in your own way and use the tools you are most comfortable with. Show 
 
 ## Challenge Description
 
-### The Robots' daycare center
+### The robots' daycare center
 
 People are getting more and more used to having robots around on a day to day basis. They build very strong relationship with them, however robots are also getting old and start to malfunction at one point. When this time comes, they are not self-sufficient anymore and you have to choose between "terminating" them or taking care of them until their vital functions stop working forever.
 
