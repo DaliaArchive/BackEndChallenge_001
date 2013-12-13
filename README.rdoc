@@ -1,0 +1,68 @@
+Robot Day Care Center API USAGE DOCUMENT
+___________________________________________________________________
+Content Type :
+   application/xml
+
+Body:
+   Please pass xml in Body
+   
+   Sample xml body
+
+    <robot>
+      <name>xx1</name>
+      <size>100</requiresize>
+      <color>white</color>
+    </robot>
+
+NOTE : Content Type should be set to application/xml for xml data in body 
+
+API Requests:
+
+=> Listing robots
+   url: http://0.0.0.0:3000/robots/
+   method: GET
+   body : not needed
+   return type : json
+
+=> Show robot detail
+   url: http://0.0.0.0:3000/robots/showrobot/:name
+   method: GET
+   body : not needed
+   return type : json
+
+=> Creating robot
+   url: http://0.0.0.0:3000/robots/
+   method: Post
+   Body : xml, name is unique and require
+
+=> Updating robot
+   url: http://0.0.0.0:3000/robots/updaterobot/:name
+   method: PUT
+   Body : xml, name is unique so can't be changed.
+   
+=> Robot's history
+   url: http://0.0.0.0:3000/robots/history/:name
+   method: GET
+   body : not needed
+   return type : json
+   
+   
+DB columns
+	Table name : robots 
+	Columns:
+		name : string
+		size : string
+		weight : string
+		status : string
+		color : string
+		age : string
+		eyes_number : string
+		antenna_number : string
+		
+	Table name : robothistories
+      robot_id : integer, reference to robot's id
+      status : string
+      field : string
+      value : string
+
+      t.timestamps

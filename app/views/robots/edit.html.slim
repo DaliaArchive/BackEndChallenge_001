@@ -1,0 +1,14 @@
+h1 Feedback
+
+= simple_form_for @robot , :url => updaterobot_robots_path do |f|
+    = f.input :name
+    = f.input :size
+    = f.input :weight
+    = f.input :status
+    = f.input :color
+    = f.input :age
+    = f.input :eyes_number
+    = f.input :antenna_number
+    
+    = f.submit
+  
