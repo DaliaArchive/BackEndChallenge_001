@@ -1,0 +1,2 @@
+class RobotsController < ApplicationController
+end

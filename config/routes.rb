@@ -1,4 +1,11 @@
 Api::Application.routes.draw do
+  resources :robots, :only => [:show, :index] do
+    collection do
+      post '' => 'robots#create_or_update'
+      get ':id/history' => 'robots#history'
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
