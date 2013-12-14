@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo -e "\n\n==============="
+echo -e "\nCreating a new robot with an ID"
+curl -X POST -H "Content-Type: application/json" -d '{"robot":{"id":"XX1","color":"white"}}' http://0.0.0.0:3000/robots
+
+echo -e "\n\n==============="
+echo -e "\nCreating a new robot without an ID"
+curl -X POST -H "Content-Type: application/json" -d '{"robot":{"color":"white","weight":{"value":"10", "unit":"kg"}}}' http://0.0.0.0:3000/robots
+
+echo -e "\n\n==============="
+echo -e "\nUpdate robot XX1 with weight and color"
+curl -X POST -H "Content-Type: application/json" -d '{"robot":{"id":"XX1","color":"grey","weight":{"value":20, "unit":"kg"}}}' http://0.0.0.0:3000/robots
+
+echo -e "\n\n==============="
+echo -e "\nUpdate robot XX1 with weight"
+curl -X POST -H "Content-Type: application/json" -d '{"robot":{"id":"XX1","weight":{"value":22, "unit":"kg"}}}' http://0.0.0.0:3000/robots
+
+echo -e "\n\n==============="
+echo -e "\nGet robot details for id XX1"
+curl http://localhost:3000/robots/XX1
+
+echo -e "\n\n==============="
+echo -e "\nList all robots"
+curl http://localhost:3000/robots
+
+echo -e "\n\n==============="
+echo -e "\nHistory/Audit trail for XX1"
+curl http://localhost:3000/robots/XX1/history
