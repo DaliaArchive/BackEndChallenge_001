@@ -6,7 +6,7 @@ class RobotsController < ApplicationController
       existing_robot = Robot.create(params[:robot])
       audit_changes(:create, nil, params[:robot], existing_robot.id)
     else
-      existing_attributes =  existing_robot.attributes
+      existing_attributes =  existing_robot.attributes.clone
       existing_robot.update_attributes(params[:robot])
       audit_changes(:update, existing_attributes, params[:robot], existing_robot.id)
     end
