@@ -4,9 +4,12 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.2'
 
 gem 'rails-api'
+gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
+
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'database_cleaner'
 end
 
 
