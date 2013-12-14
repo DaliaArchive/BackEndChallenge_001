@@ -6,8 +6,9 @@ class RobotsController < ApplicationController
       existing_robot = Robot.create(params[:robot])
       audit_changes(:create, nil, params[:robot], existing_robot.id)
     else
-      audit_changes(:update, existing_robot.attributes, params[:robot], existing_robot.id)
+      existing_attributes =  existing_robot.attributes
       existing_robot.update_attributes(params[:robot])
+      audit_changes(:update, existing_attributes, params[:robot], existing_robot.id)
     end
     render :status => 200, :json => {:robot => existing_robot}
   end
