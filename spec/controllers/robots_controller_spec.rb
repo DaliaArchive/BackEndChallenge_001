@@ -40,9 +40,45 @@ describe RobotsController do
 
   end
 
+
+
+  describe 'show' do
+
+    it 'should render 200 with robot details for a valid robot id' do
+      Robot.create(:id => 'XX1', :color => :white)
+
+      get :show, {:id => 'XX1'}
+
+      response.status.should == 200
+      robot_from(response).should == Robot.where(:id => 'XX1')[0]
+    end
+
+    it 'should respond with a 400 for an invalid robot id' do
+      get :show, {:id => 'XX1'}
+
+      response.status.should == 400
+      JSON.parse(response.body)['error_message'].should_not be_nil
+    end
+
+  end
+
+
+  describe 'index' do
+
+    it 'should return a list of all the robots with a 200 status' do
+      Robot.create(:id => 'XX1', :color => :white)
+      Robot.create(:id => 'XX2', :color => :white)
+
+      get :index
+
+      response.status.should == 200
+      JSON.parse(response.body)['robots'].count.should == 2
+    end
+
+  end
+
   def robot_from(response)
-    robot_string = JSON.parse(response.body)['robot']
-    Robot.new(JSON.parse(robot_string))
+    Robot.new(JSON.parse(response.body)['robot'])
   end
 
 end
