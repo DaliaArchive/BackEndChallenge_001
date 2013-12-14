@@ -1,10 +1,15 @@
 class RobotsController < ApplicationController
 
   def create_or_update
-    robot = Robot.new(params[:robot])
-    return render :status => 400 , :json => { :error_message => 'Robot parameters are invalid.' } unless robot.valid?
-    robot.upsert
-    render :status => 200, :json => {:robot => robot}
+    existing_robot = Robot.where(:id => params[:robot][:id]).first
+    if(existing_robot.nil?)
+      existing_robot = Robot.create(params[:robot])
+      audit_changes(:create, nil, params[:robot], existing_robot.id)
+    else
+      audit_changes(:update, existing_robot.attributes, params[:robot], existing_robot.id)
+      existing_robot.update_attributes(params[:robot])
+    end
+    render :status => 200, :json => {:robot => existing_robot}
   end
 
   def show
@@ -15,6 +20,24 @@ class RobotsController < ApplicationController
 
   def index
     render :status => 200, :json => {:robots => Robot.all}
+  end
+
+  def history
+    robot_audit_trail = RobotAudit.where(:robot_id => params[:id])
+    render :status => 200, :json => {:audit => robot_audit_trail.collect { |item| item } }
+  end
+
+  private
+
+  def audit_changes(command, original_attributes, changed_attributes, robot_id)
+    changes = {}
+    changed_attributes_without_id = changed_attributes.reject { |key| key == 'id' }
+    if original_attributes.nil?
+      changed_attributes_without_id.each { |key,value| changes[key] = "[] -> [ #{value.to_s} ]" }
+    else
+      changed_attributes_without_id.each { |key,value| changes[key] = "[#{original_attributes[key]}] -> [ #{value.to_s} ]" if original_attributes[key] != value }
+    end
+    RobotAudit.create(:robot_id => robot_id, :type => command, :changed_attribute_values => changes)
   end
 
 end

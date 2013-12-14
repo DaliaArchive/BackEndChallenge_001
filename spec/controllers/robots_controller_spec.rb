@@ -4,6 +4,17 @@ describe RobotsController do
 
   describe 'create_or_update' do
 
+    it 'should save the details for a non-existing robot and respond with a 200' do
+
+      post :create_or_update, :robot => { :weight => { :value => 100, :unit => 'cm'}, :color => :white}
+
+      Robot.where(:color => 'white').count.should == 1
+      response.status.should == 200
+      robot_from(response).id.should_not be_nil
+
+    end
+
+
     it 'should save the details for a non-existing robot with the given id and respond with a 200' do
 
       Robot.where(:id => 'XX1').count.should == 0
@@ -16,6 +27,7 @@ describe RobotsController do
 
     end
 
+
     it 'should update the details for an existing robot with the given id and respond with a 200' do
 
       Robot.create(:id => 'XX1', :color => :white)
@@ -27,20 +39,7 @@ describe RobotsController do
       robot_from(response).should == Robot.where(:id => 'XX1')[0]
     end
 
-    it 'should respond with a 400 for an invalid robot data' do
-      mocked_robot = double
-      mocked_robot.should_receive(:valid?).and_return(false)
-      Robot.should_receive(:new).and_return(mocked_robot)
-
-      post :create_or_update, :robot => { :id => 'XX1', :color => :black}
-
-      response.status.should == 400
-      JSON.parse(response.body)['error_message'].should_not be_nil
-    end
-
   end
-
-
 
   describe 'show' do
 
@@ -73,6 +72,42 @@ describe RobotsController do
 
       response.status.should == 200
       JSON.parse(response.body)['robots'].count.should == 2
+    end
+
+  end
+
+
+  describe 'history' do
+
+    it 'should return an audit trail for changes to a robot attributes excluding the id field' do
+      post :create_or_update, :robot => { :id => 'XX1', :color => :black, :number_of_antennas => 1}
+      get :history, {:id => 'XX1'}
+
+      response.status.should == 200
+      parsed_response = JSON.parse(response.body)
+      changed_attribute_values = parsed_response['audit'][0]['changed_attribute_values']
+
+      parsed_response['audit'][0]['robot_id'].should == 'XX1'
+      parsed_response['audit'][0]['type'].should == 'create'
+      parsed_response['audit'][0]['created_at'].should_not be_nil
+      changed_attribute_values.size.should == 2
+      changed_attribute_values['color'].should == '[] -> [ black ]'
+      changed_attribute_values['number_of_antennas'].should == '[] -> [ 1 ]'
+
+      post :create_or_update, :robot => { :id => 'XX1', :color => :white, :number_of_antennas => 1}
+
+      get :history, {:id => 'XX1'}
+
+      response.status.should == 200
+      parsed_response = JSON.parse(response.body)
+      changed_attribute_values = parsed_response['audit'][1]['changed_attribute_values']
+
+      parsed_response['audit'].count.should == 2
+      parsed_response['audit'][1]['robot_id'].should == 'XX1'
+      parsed_response['audit'][1]['type'].should == 'update'
+      parsed_response['audit'][1]['created_at'].should_not be_nil
+      changed_attribute_values.size.should == 1
+      changed_attribute_values['color'].should == '[black] -> [ white ]'
     end
 
   end
