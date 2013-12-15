@@ -17,3 +17,4 @@
 # to avoid deprecation warning.
 # Can be safely removed in a rails3 api-only application.
 RobotsDaycare::Application.config.secret_token = '23b0223c4637d9e105a780cfcb627424c44bbe020ba51f96df7f614e843ac220e801e782dc00a6d942f51a291204007d389ddcbf330aab0b90ea88731d37c355'
+RobotsDaycare::Application.config.secret_key_base = 'db5c783fe8c59b811569d507834582f2f55af9b7195177e484e36262140938baf28ae38d61828f80f4d159e80d2d0dd08208f2057779c9fd7b1658a7ceb1e10d'
