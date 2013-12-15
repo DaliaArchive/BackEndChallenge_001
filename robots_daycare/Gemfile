@@ -4,10 +4,16 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 gem 'rails-api'
 gem 'sqlite3'
+gem 'fabrication'
 
 group :test, :development do
   gem 'rspec-rails'
   gem 'pry'
+end
+
+group :test do
+  gem 'rack-test'
+  gem 'database_cleaner'
 end
 
 # To use ActiveModel has_secure_password

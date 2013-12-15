@@ -1,0 +1,2 @@
+Fabricator(:robot) do
+end
