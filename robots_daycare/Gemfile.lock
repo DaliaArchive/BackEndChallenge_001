@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/rails-api/rails-api.git
+  revision: a3fcaf8645e311a3aa31a3bb6ee47fe5c7108622
+  branch: master
+  specs:
+    rails-api (0.1.0)
+      actionpack (>= 3.2.11)
+      railties (>= 3.2.11)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -58,10 +67,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.0.0)
       sprockets-rails (~> 2.0.0)
-    rails-api (0.1.0)
-      actionpack (>= 3.2.11)
-      railties (>= 3.2.11)
-      tzinfo (~> 0.3.31)
     railties (4.0.0)
       actionpack (= 4.0.0)
       activesupport (= 4.0.0)
@@ -108,6 +113,6 @@ DEPENDENCIES
   pry
   rack-test
   rails (= 4.0.0)
-  rails-api
+  rails-api!
   rspec-rails
   sqlite3
