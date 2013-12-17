@@ -1,3 +1,24 @@
+# Usage
+
+## Starting the app
+
+1. Execute the script (rdc.rb): `ruby rdc.rb`
+2. Type any of the supported commands.
+3. ???
+4. Enjoy.
+
+## Commands
+1. `add *name* *attribute*` - add robot with *name* and *attributes*
+2. `delete *name*` - delete robot with *name*
+3. `update *name* *attributes*` - with given *name* and *attributes*, update robot or add it if it doesn't exist
+4. `show *name*` - show attributes of robot with *name*
+5. `index` - show all robots
+6. `history *name*` - show history of the robot with *name*
+7. `exit` - quit the app
+
+> Attributes should be typed as ruby hash, for instance: {size: "100cm", status: "good conditions", "number of antenna": 2}
+
+
 # BackEnd Challenge 001
 
 For us, it is not all about the CV or titles. The most important for us is to know how you face a concrete challenge and how you approach it. What is your way of thinking, how do you tackle the problem, which tools do you choose, ...
