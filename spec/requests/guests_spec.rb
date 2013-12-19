@@ -32,7 +32,7 @@ describe 'Guests' do
   end
 
   describe 'GET /guests' do
-    xit 'gives the list on guests with the last updated time' do
+    it 'gives the list on guests with the last updated time' do
       Timecop.freeze(Time.parse('12 Dec 2234 13:04:12')) do
         put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
       end
@@ -48,8 +48,8 @@ describe 'Guests' do
 
       get guests_path
 
-      expect(response.body).to eq([{name: 'XX1', last_update: last_update_time_for_xx1},
-                                   {name: 'XX2', last_update: last_update_time_for_xx1}].to_json)
+      expect(response.body).to eq([{name: 'XX1', last_update: last_update_time_for_xx1.utc},
+                                   {name: 'XX2', last_update: last_update_time_for_xx2.utc}].to_json)
     end
   end
 

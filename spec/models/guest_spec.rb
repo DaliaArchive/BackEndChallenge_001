@@ -33,7 +33,7 @@ describe Guest do
   end
 
   context 'equality' do
-    subject(:guest) { Guest.new(name: 'Bob', attributes: {eyes: 2})}
+    subject(:guest) { Guest.new(name: 'Bob', attributes: {eyes: 2}) }
     it 'should be equal to another guest with the same name and attributes' do
       expect(guest).to eq(Guest.new(name: 'Bob', attributes: {eyes: 2}))
     end
@@ -48,13 +48,13 @@ describe Guest do
   context '#initialize' do
     it 'should assign attributes from params' do
       guest = Guest.new(attributes: {test: 'OK'})
-      
+
       expect(guest.attributes).to eql('test' => 'OK')
     end
 
     it 'should assign attributes as empty hash if not passed in params' do
       guest = Guest.new({})
-      
+
       expect(guest.attributes).to eql({})
     end
 
@@ -72,7 +72,7 @@ describe Guest do
 
       guest.merge_attributes(gps: true)
 
-      expect(guest).to eq(Guest.new(attributes: {eyes:1, gps: true}))
+      expect(guest).to eq(Guest.new(attributes: {eyes: 1, gps: true}))
     end
   end
 
@@ -86,23 +86,51 @@ describe Guest do
   end
 
   context '#save!' do
-    it 'should create new record if its a new guest record' do
-      guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101}) 
+    context 'new record' do
+      it 'should save a new guest record' do
+        guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101})
 
-      guest.save!
+        guest.save!
 
-      expect(Guest.find('TSTBOT')).to eq(guest)
+        expect(Guest.find('TSTBOT')).to eq(guest)
+      end
+
+      it 'notify guest history about new record' do
+        guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101})
+
+        expect{guest.save!}.to change{guest.history.count}.by(1)
+
+        history_record = guest.history.last
+        expect(history_record.type).to eq('created')
+        expect(history_record.guest_name).to eq('TSTBOT')
+      end
     end
 
-    it 'should update the existing guest' do
-      Guest.new(name: 'TSTBOT', attributes: {eyes: 101}).save!
-      guest = Guest.find('TSTBOT')
-      guest.merge_attributes(eyes: 99)
+    context 'existing record' do
+      it 'should update the existing guest' do
+        Guest.new(name: 'TSTBOT', attributes: {eyes: 101}).save!
+        guest = Guest.find('TSTBOT')
+        guest.merge_attributes(eyes: 99)
 
-      guest.save!
+        guest.save!
 
-      guest = Guest.find('TSTBOT')
-      expect(guest).to eq(Guest.new(name: 'TSTBOT', attributes: {eyes: 99}))
+        guest = Guest.find('TSTBOT')
+        expect(guest).to eq(Guest.new(name: 'TSTBOT', attributes: {eyes: 99}))
+      end
+
+      it 'notify guest history about updated record' do
+        Guest.new(name: 'TSTBOT', attributes: {eyes: 101}).save!
+        guest = Guest.find('TSTBOT')
+        guest.merge_attributes(eyes: 99)
+
+        expect{guest.save!}.to change{guest.history.count}.by(1)
+
+        history_record = guest.history.last
+        expect(history_record.type).to eq('updated')
+        expect(history_record.guest_name).to eq('TSTBOT')
+
+      end
+
     end
   end
 

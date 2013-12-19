@@ -60,9 +60,11 @@ class Guest
 
   def update!
     MongoStore.update!(collection, @id, to_params)
+    GuestHistory.guest_updated(self)
   end
 
   def create!
     MongoStore.create!(collection, to_params)
+    GuestHistory.guest_created(self)
   end
 end
