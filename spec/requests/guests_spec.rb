@@ -23,7 +23,7 @@ describe 'Guests' do
 
     it 'should update the attributes if guest already exists' do
       put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
-      
+
       put guest_path('XX1'), {guest: {size: '101cm', eyes: '2'}}
 
       get guest_path('XX1')
@@ -31,36 +31,55 @@ describe 'Guests' do
     end
   end
 
+  describe 'GET /guests' do
+    xit 'gives the list on guests with the last updated time' do
+      Timecop.freeze(Time.parse('12 Dec 2234 13:04:12')) do
+        put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
+      end
+      last_update_time_for_xx1 = Time.parse('12 Dec 2235 13:04:12')
+      Timecop.freeze(last_update_time_for_xx1) do
+        put guest_path('XX1'), {guest: {size: '101cm'}}
+      end
+
+      last_update_time_for_xx2 = Time.parse('12 Dec 2231 13:04:12')
+      Timecop.freeze(last_update_time_for_xx2) do
+        put guest_path('XX2'), {guest: {size: '100cm', weight: '10kg'}}
+      end
+
+      get guests_path
+
+      expect(response.body).to eq([{name: 'XX1', last_update: last_update_time_for_xx1},
+                                   {name: 'XX2', last_update: last_update_time_for_xx1}].to_json)
+    end
+  end
+
   describe 'GET /guest/:guest_name/history' do
     xit 'gives the list of changes to the guest attributes' do
-      Timecop.freeze(DateTime.parse('12 Dec 2234 13:04:12')) do
+      Timecop.freeze(Time.parse('12 Dec 2234 13:04:12')) do
         put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
-      end 
+      end
 
-      Timecop.freeze(DateTime.parse('12 Dec 2250 07:10:00')) do
+      Timecop.freeze(Time.parse('12 Dec 2250 07:10:00')) do
         put guest_path('XX1'), {guest: {size: '100cm', weight: '4kg', ears: '1'}}
-      end 
+      end
 
       get history_guest_path('XX1')
       expect(response.body).to eq([
-        {timestamp: DateTime.parse('12 Dec 2234 13:04:12'),
-         type: 'create',
-         changes: [
-           {attribute: 'size', old: nil, new: '100cm'},
-           {attribute: 'weight', old: nil, new: '10kg'}
-         ]
-        },
-        {timestamp: DateTime.parse('12 Dec 2250 07:10:00'),
-         type: 'update',
-         changes: [
-           {attribute: 'weight', old: '10kg', new: '4kg'},
-           {attribute: 'ears', old: nil, new: '1'}
-         ]
-        },
-      ].to_json)
-
-
-
+                                      {timestamp: Time.parse('12 Dec 2234 13:04:12'),
+                                       type: 'create',
+                                       changes: [
+                                           {attribute: 'size', old: nil, new: '100cm'},
+                                           {attribute: 'weight', old: nil, new: '10kg'}
+                                       ]
+                                      },
+                                      {timestamp: Time.parse('12 Dec 2250 07:10:00'),
+                                       type: 'update',
+                                       changes: [
+                                           {attribute: 'weight', old: '10kg', new: '4kg'},
+                                           {attribute: 'ears', old: nil, new: '1'}
+                                       ]
+                                      },
+                                  ].to_json)
     end
   end
 end

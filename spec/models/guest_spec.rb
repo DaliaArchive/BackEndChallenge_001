@@ -106,4 +106,27 @@ describe Guest do
     end
   end
 
+  context '#last_updated' do
+    it 'should return the timestamp for the last value in the history' do
+      guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101})
+      guest.save!
+      GuestHistory.new(guest_name: guest.name, timestamp: Time.parse('1-2-2013')).create!
+      GuestHistory.new(guest_name: guest.name, timestamp: Time.parse('1-2-2015')).create!
+      GuestHistory.new(guest_name: guest.name, timestamp: Time.parse('1-2-2045')).create!
+
+      expect(guest.last_updated.to_i).to eq(Time.parse('1-2-2045').to_i)
+    end
+  end
+
+  context '.all' do
+    it 'should return all the guests stored' do
+      guest1 = Guest.new(name: 'TSTBOT', attributes: {eyes: 101})
+      guest1.save!
+
+      guest2 = Guest.new(name: 'TSTBOT2', attributes: {eyes: 103})
+      guest2.save!
+
+      expect(Guest.all).to eq([guest1, guest2])
+    end
+  end
 end

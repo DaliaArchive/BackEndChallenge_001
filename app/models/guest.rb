@@ -8,6 +8,10 @@ class Guest
       guest_attributes = MongoStore.find(collection, name: name).first
       new(guest_attributes) if guest_attributes
     end
+
+    def all
+      MongoStore.find(collection, {}).collect{|param| new(param)}
+    end
   end
 
   attr_reader :name, :attributes
@@ -35,6 +39,10 @@ class Guest
 
   def history
     GuestHistory.find(name)
+  end
+
+  def last_updated
+    history.collect(&:timestamp).sort.last
   end
 
   private

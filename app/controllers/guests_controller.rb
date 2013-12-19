@@ -6,13 +6,17 @@ class GuestsController < ApplicationController
   end
 
   def show
-    @guest = Guest.find(params[:name])
-    render json: @guest.attributes
+    guest = Guest.find(params[:name])
+    render json: guest.attributes
   end
 
   def history
     guest = Guest.find(params[:name])
-    @history = guest.history
-    render json: @history
+    render json: guest.history
+  end
+
+  def index
+    guests = Guest.all
+    render
   end
 end

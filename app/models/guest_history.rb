@@ -9,7 +9,7 @@ class GuestHistory
     end
 
     def find(guest_name)
-      MongoStore.find('guest_history', guest_name: guest_name).collect{|param| GuestHistory.new(param)}
+      MongoStore.find('guest_history', guest_name: guest_name).collect{ |param| new(param) }
     end
   end
 
