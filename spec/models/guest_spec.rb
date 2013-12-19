@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe Guest do
-  before { 
-    Guest.clean
-  }
   context '.find_or_initialize' do
     it 'should return a new Guest if not found' do
       guest = Guest.find_or_initialize('X2')

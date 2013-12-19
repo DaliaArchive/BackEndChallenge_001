@@ -1,20 +1,14 @@
 require 'pry'
 class Guest
-  extend Mongo
-  include Mongo
-
-  def self.find_or_initialize(name)
-    if(guest = find(name))
-      guest
-    else
-      Guest.new(name: name)
+  class << self
+    def find_or_initialize(name)
+      find(name) || new(name: name)
     end
-  end
 
-  def self.find(name)
-    collection = MongoClient.new['test']['guest']
-    saved_guest = collection.find(name: name).first
-    saved_guest.present? ? Guest.new(saved_guest) : nil
+    def find(name)
+      guest_attributes = MongoStore.find(collection, name: name).first
+      new(guest_attributes) if guest_attributes
+    end
   end
 
   attr_reader :name, :attributes
@@ -27,22 +21,17 @@ class Guest
   end
 
   def save!
-    collection = MongoClient.new['test']['guest']
-    if(@id.nil?)
-      collection.insert(to_params)
+    if (@id.nil?)
+      MongoStore.create!(collection, to_params)
     else
-      collection.update({"_id" => @id}, to_params)
+      MongoStore.update!(collection, @id, to_params)
     end
-  end
-
-  def self.clean
-    MongoClient.new.drop_database('test')
   end
 
   def == other
     self.class == other.class and
-      self.name == other.name and
-      self.attributes == other.attributes
+        self.name == other.name and
+        self.attributes == other.attributes
   end
 
   def merge_attributes(attributes)
@@ -57,5 +46,12 @@ class Guest
   def to_params
     {name: @name, attributes: @attributes}
   end
-  
+
+  def self.collection
+    'guest'
+  end
+
+  def collection
+    self.class.collection
+  end
 end

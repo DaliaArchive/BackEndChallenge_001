@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Guests' do
-  before(:each) { Guest.clean }
+  #TODO: 404
   describe 'GET /guests/:guest_name' do
     it 'shows the parameters of the guests saved' do
       put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
