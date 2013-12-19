@@ -17,7 +17,7 @@ describe Guest do
 
       guest = Guest.find_or_initialize('X3')
 
-      expect(guest.attributes).to eq("age" => 1)
+      expect(guest.attributes).to eq('age' => 1)
       expect(guest.name).to eq('X3')
     end
   end
@@ -44,15 +44,15 @@ describe Guest do
     it 'should not be equal when name or attributes or type dont match' do
       expect(guest).not_to eq(Guest.new(name: 'Bob1', attributes: {eyes: 2}))
       expect(guest).not_to eq(Guest.new(name: 'Bob', attributes: {eyes: 3}))
-      expect(guest).not_to eq("a string")
+      expect(guest).not_to eq('a string')
     end
   end
 
   context 'initialize' do
     it 'should assign attributes from params' do
-      guest = Guest.new(attributes: {test: "OK"})
+      guest = Guest.new(attributes: {test: 'OK'})
       
-      expect(guest.attributes).to eql("test" => "OK")
+      expect(guest.attributes).to eql('test' => 'OK')
     end
 
     it 'should assign attributes as empty hash if not passed in params' do
@@ -62,10 +62,10 @@ describe Guest do
     end
 
     it 'should accept string keys for params hash' do
-      guest = Guest.new("attributes" => {test: "OK"})
+      guest = Guest.new('attributes' => {test: 'OK'})
 
 
-      expect(guest.attributes).to eql("test" => "OK")
+      expect(guest.attributes).to eql('test' => 'OK')
     end
   end
 
@@ -76,6 +76,15 @@ describe Guest do
       guest.merge_attributes(gps: true)
 
       expect(guest).to eq(Guest.new(attributes: {eyes:1, gps: true}))
+    end
+  end
+
+  context '#history' do
+    xit 'should give the history for the guest' do
+      guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101})
+      guest.save!
+
+      expect(guest.history).to eq(GuestHistory.find('TSTBOT'))
     end
   end
 

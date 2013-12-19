@@ -17,5 +17,9 @@ describe GuestsController do
     it "routes to #update for put" do
       put("/guests/X31").should route_to("guests#update", :name => "X31")
     end
+
+    it 'routes to #history for get history' do
+      get('/guests/X32/history').should route_to('guests#history', name: 'X32')
+    end
   end
 end

@@ -49,6 +49,10 @@ class Guest
     self.attributes.merge!(attributes)
   end
 
+  def history
+    GuestHistory.find(name)
+  end
+
   private
   def to_params
     {name: @name, attributes: @attributes}

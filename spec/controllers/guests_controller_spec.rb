@@ -22,4 +22,15 @@ describe GuestsController do
     end
   end
 
+  describe '#histroy' do
+    xit 'should get the history of a guest' do
+      guest = Guest.new(name: 'R2D2', attributes: {height: '100cm'})
+      guest.save!
+
+      get :history, name: 'R2D2'  
+
+      expect(assigns(:history)).to eq(guest.history)
+      expect(assigns(:history).count).to eq(1)
+    end
+  end
 end
