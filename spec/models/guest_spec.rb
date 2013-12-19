@@ -69,13 +69,34 @@ describe Guest do
     end
   end
 
-  context 'merge_attributes' do
+  context '#merge_attributes' do
     it 'should merge attributes with existing attributes' do
-      guest = Guest.new(:attributes => {eyes: 1})
+      guest = Guest.new(attributes: {eyes: 1})
 
       guest.merge_attributes(gps: true)
 
-      expect(guest).to eq(Guest.new(:attributes => {eyes:1, gps: true}))
+      expect(guest).to eq(Guest.new(attributes: {eyes:1, gps: true}))
+    end
+  end
+
+  context '#save!' do
+    it 'should create new record if its a new guest record' do
+      guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101}) 
+
+      guest.save!
+
+      expect(Guest.find('TSTBOT')).to eq(guest)
+    end
+
+    it 'should update the existing guest' do
+      Guest.new(name: 'TSTBOT', attributes: {eyes: 101}).save!
+      guest = Guest.find('TSTBOT')
+      guest.merge_attributes(eyes: 99)
+
+      guest.save!
+
+      guest = Guest.find('TSTBOT')
+      expect(guest).to eq(Guest.new(name: 'TSTBOT', attributes: {eyes: 99}))
     end
   end
 

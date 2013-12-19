@@ -23,11 +23,16 @@ class Guest
     params = HashWithIndifferentAccess.new(params)
     @name = params[:name]
     @attributes = params[:attributes] || {}
+    @id = params[:_id]
   end
 
   def save!
     collection = MongoClient.new['test']['guest']
-    collection.insert(name: @name, attributes: @attributes)
+    if(@id.nil?)
+      collection.insert(to_params)
+    else
+      collection.update({"_id" => @id}, to_params)
+    end
   end
 
   def self.clean
@@ -42,6 +47,11 @@ class Guest
 
   def merge_attributes(attributes)
     self.attributes.merge!(attributes)
+  end
+
+  private
+  def to_params
+    {name: @name, attributes: @attributes}
   end
   
 end
