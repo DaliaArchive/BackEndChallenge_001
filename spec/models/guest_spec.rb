@@ -8,8 +8,8 @@ describe Guest do
     it 'should return a new Guest if not found' do
       guest = Guest.find_or_initialize('X2')
 
-      expect(guest.attributes).to eql({})
-      expect(guest.name).to eql('X2')
+      expect(guest.attributes).to eq({})
+      expect(guest.name).to eq('X2')
     end
 
     it 'should return the saved Guest, when found' do
@@ -17,8 +17,34 @@ describe Guest do
 
       guest = Guest.find_or_initialize('X3')
 
-      expect(guest.attributes).to eql("age" => 1)
-      expect(guest.name).to eql('X3')
+      expect(guest.attributes).to eq("age" => 1)
+      expect(guest.name).to eq('X3')
+    end
+  end
+
+  context '.find' do
+    it 'should return null if not found' do
+      expect(Guest.find('X2')).to be_nil
+    end
+
+    it 'should return the saved Guest, when found' do
+      guest = Guest.new(name: 'X3', attributes: {age: 1})
+      guest.save!
+
+      expect(Guest.find('X3')).to eq(guest)
+    end
+  end
+
+  context '.eql?' do
+    subject(:guest) { Guest.new(name: 'Bob', attributes: {eyes: 2})}
+    it 'should be equal to another guest with the same name and attributes' do
+      expect(guest).to eq(Guest.new(name: 'Bob', attributes: {eyes: 2}))
+    end
+
+    it 'should not be equal when name or attributes or type dont match' do
+      expect(guest).not_to eq(Guest.new(name: 'Bob1', attributes: {eyes: 2}))
+      expect(guest).not_to eq(Guest.new(name: 'Bob', attributes: {eyes: 3}))
+      expect(guest).not_to eq("a string")
     end
   end
 
@@ -40,6 +66,16 @@ describe Guest do
 
 
       expect(guest.attributes).to eql("test" => "OK")
+    end
+  end
+
+  context 'merge_attributes' do
+    it 'should merge attributes with existing attributes' do
+      guest = Guest.new(:attributes => {eyes: 1})
+
+      guest.merge_attributes(gps: true)
+
+      expect(guest).to eq(Guest.new(:attributes => {eyes:1, gps: true}))
     end
   end
 
