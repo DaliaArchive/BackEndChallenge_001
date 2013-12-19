@@ -1,4 +1,3 @@
-require 'pry'
 class Guest
   class << self
     def find_or_initialize(name)
@@ -21,11 +20,7 @@ class Guest
   end
 
   def save!
-    if (@id.nil?)
-      MongoStore.create!(collection, to_params)
-    else
-      MongoStore.update!(collection, @id, to_params)
-    end
+    @id.nil? ? create! : update!
   end
 
   def == other
@@ -53,5 +48,13 @@ class Guest
 
   def collection
     self.class.collection
+  end
+
+  def update!
+    MongoStore.update!(collection, @id, to_params)
+  end
+
+  def create!
+    MongoStore.create!(collection, to_params)
   end
 end

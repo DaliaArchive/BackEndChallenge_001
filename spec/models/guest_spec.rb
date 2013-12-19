@@ -32,7 +32,7 @@ describe Guest do
     end
   end
 
-  context '.eql?' do
+  context 'equality' do
     subject(:guest) { Guest.new(name: 'Bob', attributes: {eyes: 2})}
     it 'should be equal to another guest with the same name and attributes' do
       expect(guest).to eq(Guest.new(name: 'Bob', attributes: {eyes: 2}))
@@ -45,7 +45,7 @@ describe Guest do
     end
   end
 
-  context 'initialize' do
+  context '#initialize' do
     it 'should assign attributes from params' do
       guest = Guest.new(attributes: {test: 'OK'})
       
