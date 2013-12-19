@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe "Guests" do
    describe "GET /guests/:guest_name" do
-    xit 'shows the parameters of the guests saved' do
-      put guest_path('XX1'), {size: '100cm', weight: '10kg'}
+    it 'shows the parameters of the guests saved' do
+      put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
 
       get guest_path('XX1')
 

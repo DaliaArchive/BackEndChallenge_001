@@ -6,5 +6,7 @@ class GuestsController < ApplicationController
   end
 
   def show
+    @guest = Guest.find(params[:name])
+    render json: @guest.attributes
   end
 end
