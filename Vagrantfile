@@ -9,6 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210.box"
 
   config.vm.network :forwarded_port, guest: 27018, host: 27018
+  config.vm.network :forwarded_port, guest: 27017, host: 27017
 
   config.vm.synced_folder ".", "/home/vagrant/robot_day_care"
 

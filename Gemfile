@@ -6,7 +6,12 @@ gem 'rails', '4.0.2'
 gem 'rails-api'
 
 gem 'rspec-rails'
+gem 'mongo'
+gem 'bson_ext'
 
+group :development do
+  gem 'pry-debugger'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
