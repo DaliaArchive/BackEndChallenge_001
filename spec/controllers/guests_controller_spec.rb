@@ -24,7 +24,7 @@ describe GuestsController do
   end
 
   describe '#index' do
-    xit 'should list all the guests' do
+    it 'should list all the guests' do
       guest1 = Guest.new(name: 'R2D2', attributes: {height: '100cm'})
       guest1.save!
 
@@ -33,8 +33,7 @@ describe GuestsController do
 
       get :index
 
-      expect(response.body).to eq([{name: guest1.name, last_updated: guest1.last_updated},
-                                   {name: guest2.name, last_updated: guest2.last_updated}])
+      expect(assigns(:guests)).to eq([guest1, guest2])
     end
   end
 

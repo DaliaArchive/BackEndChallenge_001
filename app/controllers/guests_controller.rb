@@ -16,7 +16,7 @@ class GuestsController < ApplicationController
   end
 
   def index
-    guests = Guest.all
+    @guests = Guest.all
     render
   end
 end
