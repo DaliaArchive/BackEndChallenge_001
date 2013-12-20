@@ -91,6 +91,19 @@ describe DrRoboto::RobotsController do
       it { JSON.parse(subject.body)['data'].size.should == 10 }
     end
 
+    context "when the robots database is empty" do
+      before do
+        DrRoboto::Robot.destroy_all
+        set_cookie "token=#{inspector.token}"
+        get "/robots"
+      end
+      subject { last_response }
+      it { subject.status.should == 200 }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+      it { JSON.parse(subject.body).key?('data').should == true }
+      it { JSON.parse(subject.body)['data'].size.should == 0 }
+    end
+
   end
 
 end
