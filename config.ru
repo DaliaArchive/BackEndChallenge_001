@@ -1,2 +1,2 @@
-require './app.rb'
+require 'dr_roboto'
 run DrRoboto::App
