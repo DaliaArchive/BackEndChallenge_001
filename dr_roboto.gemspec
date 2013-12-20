@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sinatra-activerecord"
   spec.add_dependency "dotenv"
   spec.add_dependency "json"
+  spec.add_dependency "paper_trail"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"

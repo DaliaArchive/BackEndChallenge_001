@@ -1,5 +1,4 @@
 require 'dr_roboto/controllers/base_controller'
-require 'dr_roboto/models/inspector'
 
 module DrRoboto
   class InspectorsController < BaseController

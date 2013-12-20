@@ -1,8 +1,4 @@
 require 'dr_roboto/controllers/base_controller'
-require 'dr_roboto/models/inspector'
-require 'dr_roboto/models/robot'
-require 'dr_roboto/models/robot_attribute'
-require 'dr_roboto/helpers/auth_helper'
 
 module DrRoboto
   class RobotsController < BaseController
@@ -44,7 +40,12 @@ module DrRoboto
     end
 
     get '/robots/:name/history' do
-
+      raise ParamsMissing unless params[:name].present?
+      robot = Robot.includes(:robot_attributes).find_by!(name: params[:name])
+      history = {}
+      robot.robot_attributes.each{ |a| history[a.name] = a.history }
+      status 200
+      { data: history }.to_json
     end
     
   end

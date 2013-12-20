@@ -24,7 +24,7 @@ require 'dr_roboto/controllers/robots_controller'
 module DrRoboto
   class App < Sinatra::Base
 
-    # Plug in or remove controllers here (e.g. a new DoctorsController)
+    # Plug in or remove controllers here (e.g. a future DoctorsController)
     use InspectorsController
     use RobotsController
 

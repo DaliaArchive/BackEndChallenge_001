@@ -143,7 +143,93 @@ describe DrRoboto::RobotsController do
   end
 
   describe "GET /robots/:name/history" do
-    
+
+    let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget', password: '1234').first_or_create }
+    let(:first_attributes){ {'age' => '10', 'size' => '15'} }
+    let(:second_attributes){ {'age' => '15', 'weight' => '200'} }
+    let(:third_attributes){ {'age' => '20', 'size' => '120'} }
+
+    context "when the robot's attributes have no previous versions" do
+      before do
+        PaperTrail.enabled = true
+        DrRoboto::Robot.where(name: 'robot1').destroy_all
+        robot = DrRoboto::Robot.create(name: 'robot1')
+        first_attributes.each do |k, v|
+          DrRoboto::RobotAttribute.create(robot: robot, name: k, value: v)
+        end
+        set_cookie "token=#{inspector.token}"
+        get "/robots/robot1/history"
+      end
+      subject { last_response }
+      let(:result) do
+        {
+          'age' => [
+            { 'event' => 'create', 'value' => nil }
+          ],
+          'size' => [
+            { 'event' => 'create', 'value' => nil }
+          ]
+        }
+      end
+      it { subject.status.should == 200 }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+      it { JSON.parse(subject.body).key?('data').should == true }
+      it "should deliver the expected results (+/- the changed_at dates)" do
+        data = JSON.parse(subject.body)['data']
+        data_without_changed_at = {}
+        data.each do |a, changes|
+          data_without_changed_at[a] = changes.map do |change|
+            change.reject{ |k| k == 'changed_at' }
+          end
+        end
+        data_without_changed_at.should == result
+      end
+    end
+
+    context "when the robot's attributes have changed several times" do
+      before do
+        PaperTrail.enabled = true
+        DrRoboto::Robot.where(name: 'robot1').destroy_all
+        @robot = DrRoboto::Robot.create(name: 'robot1')
+        DrRoboto::RobotAttribute.update_or_create_from_hash(@robot, first_attributes)
+        DrRoboto::RobotAttribute.update_or_create_from_hash(@robot, second_attributes)
+        DrRoboto::RobotAttribute.update_or_create_from_hash(@robot, third_attributes)
+        set_cookie "token=#{inspector.token}"
+        get "/robots/robot1/history"
+      end
+      subject { last_response }
+      let(:result) do
+        { 
+          'age' => [
+            { 'event' => 'create', 'value' => nil },
+            { 'event' => 'update', 'value' => '10' },
+            { 'event' => 'update', 'value' => '15' }
+          ],
+          'size' => [
+            { 'event' => 'create', 'value' => nil },
+            { 'event' => 'update', 'value' => '15' }
+          ],
+          'weight' => [
+            { 'event' => 'create', 'value' => nil }
+          ]
+        }
+      end
+      it { DrRoboto::RobotAttribute.find_by(robot: @robot, name: 'age').versions.size.should > 0 }
+      it { subject.status.should == 200 }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+      it { JSON.parse(subject.body).key?('data').should == true }
+      it "should deliver the expected results (+/- the changed_at dates)" do
+        data = JSON.parse(subject.body)['data']
+        data_without_changed_at = {}
+        data.each do |a, changes|
+          data_without_changed_at[a] = changes.map do |change|
+            change.reject{ |k| k == 'changed_at' }
+          end
+        end
+        data_without_changed_at.should == result
+      end
+    end
+
   end
 
 end
