@@ -2,7 +2,7 @@
 
 **DrRoboto** is a small Sinatra API for an imaginary robots treatment center. 
 
-The **API Docs* can be found here: [http://docs.drroboto.apiary.io/](http://docs.drroboto.apiary.io/).
+The **API Docs** can be found here: [http://docs.drroboto.apiary.io/](http://docs.drroboto.apiary.io/).
 
 ## Installation
 
