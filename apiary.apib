@@ -170,7 +170,7 @@ Retrieves a robot's attributes.
         }
 
 ## GET /robots/{name}/history
-Retrieves a robot's history.
+Retrieves a robot's history. The data does not include the current state of the robot. It track create, update and destroy events.
 + Parameters
     
     + name (required, string, `MyRobot`) ... The name of the robot to be retrieved.
@@ -184,25 +184,17 @@ Retrieves a robot's history.
 + Response 200 (application/json)
 
         {
-            "data": [
-                {
-                    "changed_at": "2013-12-11",
-                    "change_type": "create",
-                    "changes": [
-                        {"size": [null, "new_size"]},
-                        {"weight": [null, "new_weight"]}
-                    ]
-                },
-                {
-                    "changed_at": "2013-12-12",
-                    "change_type": "update",
-                    "changes": [
-                        {"size": ["old_size, "new_size"]},
-                        {"weight": ["old_weight", "new_weight"]},
-                        {"age": [null, "new_age"]}
-                    ]
-                }
-            ]
+            "data": {
+                "age": [
+                    {"event": "create", "value": null, "changed_at": "2013-12-10 10:00"},
+                    {"event": "update", "value": "10", "changed_at": "2013-12-10 11:00"},
+                    {"event": "update", "value": "15", "changed_at": "2013-12-11 13:00"},
+                    {"event": "destroy", "value": "20", "changed_at", "2013-12-11 14:00"}
+                ],
+                "size": [
+                    {"event": "create", "value": null, "changed_at": "2013-12-10 10:25"}
+                ]
+            }
         }
 
 + Response 401 (application/json)
