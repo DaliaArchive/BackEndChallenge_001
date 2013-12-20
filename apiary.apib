@@ -72,7 +72,7 @@ according to their latest update.
     
     + Header
             
-            cookie: token=12345678
+            Cookie: token=12345678
 
 + Response 200 (application/json)
 
@@ -101,7 +101,7 @@ Creates or updates a robot with the given attributes.
     
     + Header
             
-            cookie: token=12345678
+            Cookie: token=12345678
 
 + Request (application/json)
 
@@ -140,7 +140,7 @@ Retrieves a robot's attributes.
     
     + Header
             
-            cookie: token=12345678
+            Cookie: token=12345678
 
 + Response 200 (application/json)
 
@@ -170,7 +170,7 @@ Retrieves a robot's attributes.
         }
 
 ## GET /robots/{name}/history
-Retrieves a robot's history. The data does not include the current state of the robot. It track create, update and destroy events.
+Retrieves a robot's history. The data does not include the current state of the robot. It tracks create, update and destroy events.
 + Parameters
     
     + name (required, string, `MyRobot`) ... The name of the robot to be retrieved.
@@ -179,7 +179,7 @@ Retrieves a robot's history. The data does not include the current state of the 
     
     + Header
             
-            cookie: token=12345678
+            Cookie: token=12345678
 
 + Response 200 (application/json)
 
