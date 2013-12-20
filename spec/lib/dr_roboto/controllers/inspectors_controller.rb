@@ -51,6 +51,29 @@ describe DrRoboto::InspectorsController do
 
   describe "POST /inspectors/login" do
 
+    context "when valid username and password are passed" do
+      before do
+        DrRoboto::Inspector.create(username: 'inspector_gadget', password: '1234')
+        post "/inspectors/login", { username: 'inspector_gadget', password: '1234' }
+      end
+      let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget').first }
+      subject { last_response } 
+      it { subject.status.should == 200 }
+      it { subject.headers['SetCookie'].should == "token=#{inspector.token}" }
+      it { subject.body.should == { data: 'success' }.to_json }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+    end
+
+    context "when invalid username and password are passed" do
+      before do
+        post "/inspectors/login", { username: 'not_the_inspector', password: '4321' }
+      end
+      subject { last_response }
+      it { subject.status.should == 401 }
+      it { subject.body.should == { error: 'not_authorized' }.to_json }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+    end
+
   end
 
 end

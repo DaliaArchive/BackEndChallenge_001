@@ -6,7 +6,7 @@ module DrRoboto
     validates :role, presence: true, inclusion: { in: [ROLE_INSPECTOR] }
     validates :username, presence: true, length: (1..32), uniqueness: true
     validates :password, presence: true, length: (1..32)
-    validates :token, presence: true, length: (32..32), uniqueness: true
+    validates :token, presence: true
 
     after_initialize :generate_token, if: :new_record?
 
