@@ -33,7 +33,7 @@ RACK_ENV=test bundle exec rake db:migrate
 bundle exec rspec
 ```
 
-5. Or run a server:
+5. Or run a server at ``http://localhost:9292``:
 
   ```bash
 bundle exec rackup
