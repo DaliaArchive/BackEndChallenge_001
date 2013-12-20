@@ -17,7 +17,9 @@ be set to proper *environment* variables (use ``.bashrc`` or something).
 ### Standalone & Testing
 
 1. Clone the repository at ``git@github.com:lipanski/BackEndChallenge_001.git``.
+
 2. Create the databases and user credentials from your ``.env`` files.
+
 3. Run the migrations:
 
   ```bash
