@@ -20,26 +20,26 @@ be set to proper *environment* variables (use ``.bashrc`` or something).
 2. Create the databases and user credentials from your ``.env`` files.
 3. Run the migrations:
 
-```bash
+  ```bash
 RACK_ENV=development bundle exec rake db:migrate
 RACK_ENV=test bundle exec rake db:migrate
 ```
 
 4. You can now run the test suite:
 
-```bash
+  ```bash
 bundle exec rspec
 ```
 
 5. Or run a server:
 
-```bash
+  ```bash
 bundle exec rackup
 ```
 
 6. Or use ``rerun`` to update the server every time you change something to the code:
 
-```bash
+  ```bash
 bundle exec rerun rackup
 ```
 
