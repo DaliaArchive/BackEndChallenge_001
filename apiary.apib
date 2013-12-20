@@ -1,0 +1,224 @@
+FORMAT: 1A
+HOST: http://localhost:9292
+
+# DrRoboto API
+**DrRoboto** is a small Sinatra API for an imaginary robots treatment center.
+
+# Group Inspectors
+In order to perform API calls on the Robots database, inspectors have to sign up or 
+log in to an existing account. 
+## POST /inspectors
+Creates a new inspector and returns his access token for secured API calls.
++ Request (application/json)
+
+        {
+            "username": "inspector_gadget",
+            "password": "secret"
+        }
+        
++ Response 201 (application/json)
+
+    + Header
+    
+            SetCookie: token=12345678
+
+    + Body
+    
+            {
+                "data": "success"
+            }
+            
++ Response 400 (application/json)
+
+        {
+            "error": "invalid_parameters"
+        }
+            
+## POST /inspectors/login
+Logs in an inspector based on his *username* and *password* and returns his
+access token for secured API calls.
++ Request (application/json)
+    
+        {
+            "username": "inspector_gadget",
+            "password": "secret"
+        }
+
++ Response 200 (application/json)
+
+    + Header
+    
+            SetCookie: token=12345678
+        
+    + Body
+    
+            {
+                "data": "success"
+            }
+            
++ Response 401 (application/json)
+    
+        {
+            "error": "not_authorized"
+        }
+
+# Group Robots
+
+## /robots
+### GET
+Retrieves a list of all the robots in the database sorted in descending order 
+according to their latest update.
++ Request
+    
+    + Header
+            
+            cookie: token=12345678
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "name": "FirstRobot", 
+                    "updated_at": "2013-12-11"
+                }, 
+                {
+                    "name": "SecondRobot", 
+                    "updated_at": "2013-12-10"
+                }
+            ]
+        }
+        
++ Response 401 (application/json)
+    
+        {
+            "error": "not_authorized"
+        }
+
+### POST
+Creates or updates a robot with the given attributes.
++ Request
+    
+    + Header
+            
+            cookie: token=12345678
+
++ Request (application/json)
+
+        {
+            "name": "MyRobot",
+            "some_attr": "123", 
+            "some_other_attr": "bbb" 
+        }
+
++ Response 201 (application/json)
+
+        {
+            "data": "success"
+        }
+
++ Response 401 (application/json)
+    
+        {
+            "error": "not_authorized"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "error": "missing_required_attribute"
+        }
+        
+
+## GET /robots/{name}
+Retrieves a robot's attributes.
++ Parameters
+    
+    + name (required, string, `MyRobot`) ... The name of the robot to be retrieved.
+
++ Request
+    
+    + Header
+            
+            cookie: token=12345678
+
++ Response 200 (application/json)
+
+        {
+            "data": { 
+                "name": "MyRobot", 
+                "title": "Pick-up posters from post-office" 
+            }
+        }
+
++ Response 401 (application/json)
+    
+        {
+            "error": "not_authorized"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "error": "missing_required_attribute"
+        }
+
++ Response 404 (application/json)
+        
+        {
+            "error": "not_found"
+        }
+
+## GET /robots/{name}/history
+Retrieves a robot's history.
++ Parameters
+    
+    + name (required, string, `MyRobot`) ... The name of the robot to be retrieved.
+
++ Request
+    
+    + Header
+            
+            cookie: token=12345678
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "changed_at": "2013-12-11",
+                    "change_type": "create",
+                    "changes": [
+                        {"size": [null, "new_size"]},
+                        {"weight": [null, "new_weight"]}
+                    ]
+                },
+                {
+                    "changed_at": "2013-12-12",
+                    "change_type": "update",
+                    "changes": [
+                        {"size": ["old_size, "new_size"]},
+                        {"weight": ["old_weight", "new_weight"]},
+                        {"age": [null, "new_age"]}
+                    ]
+                }
+            ]
+        }
+
++ Response 401 (application/json)
+    
+        {
+            "error": "not_authorized"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "error": "missing_required_attribute"
+        }
+
++ Response 404 (application/json)
+        
+        {
+            "error": "not_found"
+        }
