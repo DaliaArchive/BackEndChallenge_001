@@ -19,7 +19,6 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before(:suite) do
-    # ActiveRecord::Migrator.migrate('db/migrate', ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
     DatabaseCleaner.strategy = :truncation
   end
 end

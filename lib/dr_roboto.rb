@@ -3,7 +3,7 @@ require 'active_record'
 require 'sinatra/activerecord'
 
 # Load env file configurations
-# For a list of ENV variables to configure in production see .env.development
+# For a list of ENV variables to set in production see .env.development
 require 'dotenv'
 Dotenv.load ".env.#{ENV['RACK_ENV']}"
 
