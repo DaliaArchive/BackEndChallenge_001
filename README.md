@@ -18,28 +18,30 @@ be set to proper *environment* variables (use ``.bashrc`` or something).
 
 1. Clone the repository at ``git@github.com:lipanski/BackEndChallenge_001.git``.
 
-2. Create the databases and user credentials from your ``.env`` files.
+2. Run ``bundle install`` in the repo folder in order to install dependencies.
 
-3. Run the migrations:
+3. Create the databases and user credentials from your ``.env`` files.
+
+4. Run the migrations:
 
   ```bash
 RACK_ENV=development bundle exec rake db:migrate
 RACK_ENV=test bundle exec rake db:migrate
 ```
 
-4. You can now run the test suite:
+5. You can now run the test suite:
 
   ```bash
 bundle exec rspec
 ```
 
-5. Or run a server at ``http://localhost:9292``:
+6. Or run a server at ``http://localhost:9292``:
 
   ```bash
 bundle exec rackup
 ```
 
-6. Or use ``rerun`` to update the server every time you change something to the code:
+7. Or use ``rerun`` to update the server every time you change something to the code:
 
   ```bash
 bundle exec rerun rackup
