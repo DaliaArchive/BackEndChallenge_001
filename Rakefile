@@ -5,6 +5,5 @@ require 'dotenv/tasks'
 require 'dr_roboto'
 
 RSpec::Core::RakeTask.new
-
 task :default => :spec
 task :test => :spec

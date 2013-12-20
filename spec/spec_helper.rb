@@ -1,8 +1,9 @@
 ENV['RACK_ENV'] = 'test'
 
 require 'dr_roboto'
-require 'rspec'
 require 'rack/test'
+require 'rspec'
+require 'database_cleaner'
 
 module RSpecMixin
   include Rack::Test::Methods
@@ -16,4 +17,9 @@ RSpec.configure do |config|
 
   config.mock_with :rspec
   config.order = "random"
+
+  config.before(:suite) do
+    # ActiveRecord::Migrator.migrate('db/migrate', ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
+    DatabaseCleaner.strategy = :truncation
+  end
 end

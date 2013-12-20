@@ -1,9 +1,10 @@
 require 'sinatra/base'
 require 'active_record'
+require 'sinatra/activerecord'
 
 # Load env file configurations
 require 'dotenv'
-Dotenv.load ".env.#{ENV['RACK_ENV']}"
+Dotenv.load ".env.#{ENV['RACK_ENV'] || 'development'}"
 
 # Establish database connection
 ActiveRecord::Base.establish_connection(

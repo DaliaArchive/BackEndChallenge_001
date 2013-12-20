@@ -1,7 +1,7 @@
 module DrRoboto
   class Inspector < User
 
-    default_scope where(role: ROLE_INSPECTOR)
+    default_scope { where(role: ROLE_INSPECTOR) }
 
     after_initialize :set_defaults
 
