@@ -45,7 +45,7 @@ bundle exec rackup
 bundle exec rerun rackup
 ```
 
-### As a rack middleware
+### As a Rack middleware
 
 Include the gem in your Gemfile:
 
