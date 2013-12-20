@@ -106,4 +106,44 @@ describe DrRoboto::RobotsController do
 
   end
 
+  describe "GET /robots/:name" do
+
+    let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget', password: '1234').first_or_create }
+    let(:new_attributes) { {'weight' => '10kg', 'age' => '20'} }
+
+    context "when the robot is found" do
+      before do
+        robot = DrRoboto::Robot.where(name: 'robot1').first_or_create
+        robot.robot_attributes.destroy_all
+        new_attributes.each do |k, v|
+          DrRoboto::RobotAttribute.create(robot: robot, name: k, value: v)
+        end
+        set_cookie "token=#{inspector.token}"
+        get "/robots/robot1"
+      end
+      subject { last_response }
+      it { subject.status.should == 200 }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+      it { JSON.parse(subject.body).key?('data').should == true }
+      it { JSON.parse(subject.body)['data'].should == { 'name' => 'robot1' }.merge(new_attributes) }
+    end
+
+    context "when the robot is not found" do
+      before do
+        DrRoboto::Robot.where(name: 'robot1').destroy_all
+        set_cookie "token=#{inspector.token}"
+        get "/robots/robot1"
+      end
+      subject { last_response }
+      it { subject.status.should == 404 }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+      it { subject.body.should == { error: 'not_found' }.to_json }
+    end
+
+  end
+
+  describe "GET /robots/:name/history" do
+
+  end
+
 end

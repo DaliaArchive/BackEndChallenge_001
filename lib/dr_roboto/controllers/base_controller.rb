@@ -4,6 +4,7 @@ require 'json'
 require 'dr_roboto/helpers/params_helper'
 require 'dr_roboto/errors/params_missing'
 require 'dr_roboto/errors/not_authorized'
+require 'dr_roboto/errors/not_found'
 
 module DrRoboto
   class BaseController < Sinatra::Base
@@ -23,6 +24,11 @@ module DrRoboto
     error ParamsMissing, ActiveRecord::RecordInvalid do
       status 400
       { error: 'invalid_parameters' }.to_json
+    end
+
+    error NotFound, ActiveRecord::RecordNotFound do
+      status 404
+      { error: 'not_found' }.to_json
     end
 
   end

@@ -32,6 +32,16 @@ module DrRoboto
       status 201
       { data: "success" }.to_json
     end
+
+    get '/robots/:name' do
+      raise ParamsMissing unless params[:name].present?
+      robot = Robot.includes(:robot_attributes).find_by!(name: params[:name])
+      data = (robot.robot_attributes || []).inject({ name: robot.name }) do |acc, attr| 
+        acc.merge(attr.to_hash)
+      end
+      status 200
+      { data: data }.to_json
+    end
     
   end
 end
