@@ -9,10 +9,10 @@ The **API Docs** can be found here: [http://docs.drroboto.apiary.io/](http://doc
 ### Configuration
 
 The configs for running and testing **DrRoboto** in **development** mode can be 
-found and change in ``.env.development`` and ``.env.test``.
+found and modified in ``.env.development`` and ``.env.test``.
 
 When running in **production**, all the values in your ``.env`` file should 
-be set to proper *environment* variables (like in ``.bashrc`` or something).
+be set to proper *environment* variables (use ``.bashrc`` or something).
 
 ### Standalone & Testing
 
