@@ -20,12 +20,7 @@ module DrRoboto
       { error: 'not_authorized' }.to_json
     end
 
-    error ParamsMissing do
-      status 400
-      { error: 'invalid_parameters' }.to_json
-    end
-
-    error ActiveRecord::RecordInvalid do
+    error ParamsMissing, ActiveRecord::RecordInvalid do
       status 400
       { error: 'invalid_parameters' }.to_json
     end

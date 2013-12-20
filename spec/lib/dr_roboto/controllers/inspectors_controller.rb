@@ -19,7 +19,7 @@ describe DrRoboto::InspectorsController do
         let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget').first }
         it { inspector.present?.should == true }
         it { subject.status.should == 201 }
-        it { subject.headers['SetCookie'].should == "token=#{inspector.token}" }
+        it { subject.headers['Set-Cookie'].should include("token=#{inspector.token}") }
         it { subject.body.should == { data: 'success' }.to_json }
         it { subject.content_type.should == 'application/json;charset=utf-8' }
       end
@@ -59,7 +59,7 @@ describe DrRoboto::InspectorsController do
       let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget').first }
       subject { last_response } 
       it { subject.status.should == 200 }
-      it { subject.headers['SetCookie'].should == "token=#{inspector.token}" }
+      it { subject.headers['Set-Cookie'].should include("token=#{inspector.token}") }
       it { subject.body.should == { data: 'success' }.to_json }
       it { subject.content_type.should == 'application/json;charset=utf-8' }
     end

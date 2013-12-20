@@ -6,17 +6,17 @@ module DrRoboto
 
     post '/inspectors' do
       raise ParamsMissing unless params[:username].present? && params[:password].present?
-      inspector = Inspector.create!(slice(params, :username, :password))
+      inspector = Inspector.create!(filter_select(params, :username, :password))
       status 201
-      headers 'SetCookie' => "token=#{inspector.token}"
+      cookies[:token] = inspector.token
       { data: 'success' }.to_json
     end
 
     post '/inspectors/login' do
       raise NotAuthorized unless params[:username].present? && params[:password].present?
-      raise NotAuthorized unless inspector = Inspector.where(slice(params, :username, :password)).first
+      raise NotAuthorized unless inspector = Inspector.where(filter_select(params, :username, :password)).first
       status 200
-      headers 'SetCookie' => "token=#{inspector.token}"
+      cookies[:token] = inspector.token
       { data: 'success' }.to_json
     end
 

@@ -23,7 +23,12 @@ require 'dr_roboto/controllers/robots_controller'
 module DrRoboto
   class App < Sinatra::Base
 
+    configure :development do
+      set :show_exceptions, false
+    end
+
     use InspectorsController
+    use RobotsController
 
   end
 end

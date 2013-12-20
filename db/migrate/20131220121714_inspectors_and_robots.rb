@@ -15,15 +15,15 @@ class InspectorsAndRobots < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :attributes do |t|
+    create_table :robot_attributes do |t|
       t.references :robot, :null => false
-      t.string :key, :limit => 32, :null => false
+      t.string :name, :limit => 32, :null => false
       t.text :value, :null => true
     end
   end
 
   def down
-    drop_table :attributes
+    drop_table :robot_attributes
     drop_table :robots
     drop_table :users
   end

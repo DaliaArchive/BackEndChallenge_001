@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20131220121714) do
 
-  create_table "attributes", force: true do |t|
+  create_table "robot_attributes", force: true do |t|
     t.integer "robot_id",            null: false
-    t.string  "key",      limit: 32, null: false
+    t.string  "name",     limit: 32, null: false
     t.text    "value"
   end
 
