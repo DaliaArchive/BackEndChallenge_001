@@ -4,7 +4,7 @@ require 'sinatra/activerecord'
 
 # Load env file configurations
 require 'dotenv'
-Dotenv.load ".env.#{ENV['RACK_ENV'] || 'development'}"
+Dotenv.load ".env.#{ENV['RACK_ENV']}"
 
 # Establish database connection
 ActiveRecord::Base.establish_connection(
@@ -23,13 +23,7 @@ require 'dr_roboto/controllers/robots_controller'
 module DrRoboto
   class App < Sinatra::Base
 
-    configure do
-      
-    end
-
-    get '/test' do
-      "hello world"
-    end
+    use InspectorsController
 
   end
 end

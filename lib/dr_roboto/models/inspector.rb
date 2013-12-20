@@ -1,3 +1,5 @@
+require 'dr_roboto/models/user'
+
 module DrRoboto
   class Inspector < User
 

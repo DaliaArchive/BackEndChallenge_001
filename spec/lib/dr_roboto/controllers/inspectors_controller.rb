@@ -10,7 +10,7 @@ describe DrRoboto::InspectorsController do
 
     context "when provided with all parameters" do
 
-      context "when username not taken" do
+      context "if username not taken" do
         before do
           DrRoboto::Inspector.where(username: 'inspector_gadget').destroy_all
           post "/inspectors", { username: 'inspector_gadget', password: '1234' }
@@ -19,17 +19,20 @@ describe DrRoboto::InspectorsController do
         let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget').first }
         it { inspector.present?.should == true }
         it { subject.status.should == 201 }
-        it { subject.cookies['token'].should == inspector.token }
+        it { subject.headers['SetCookie'].should == "token=#{inspector.token}" }
+        it { subject.body.should == { data: 'success' }.to_json }
+        it { subject.content_type.should == 'application/json;charset=utf-8' }
       end
 
-      context "when username already taken" do
+      context "if username already taken" do
         before do
           DrRoboto::Inspector.create(username: 'inspector_gadget', password: '1234')
           post "/inspectors", { username: 'inspector_gadget', password: '1234' }
         end
         subject { last_response }
         it { subject.status.should == 400 }
-        # it { subject.content_type.should == 'application/json;charset=utf-8' }
+        it { subject.body.should == { error: 'invalid_parameters' }.to_json }
+        it { subject.content_type.should == 'application/json;charset=utf-8' }
       end
 
     end
@@ -40,6 +43,8 @@ describe DrRoboto::InspectorsController do
       end
       subject { last_response }
       it { subject.status.should == 400 }
+      it { subject.body.should == { error: 'invalid_parameters' }.to_json }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
     end
 
   end

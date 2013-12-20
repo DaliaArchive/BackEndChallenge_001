@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = DrRoboto::VERSION
   spec.authors       = ["lipanski"]
   spec.email         = ["florinelul@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{A simple Sinatra API for an imaginary robot treatment center.}
+  spec.summary       = %q{A simple Sinatra API for an imaginary robot treatment center.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "sinatra"
+  spec.add_dependency "sinatra-contrib"
   spec.add_dependency "mysql2"
   spec.add_dependency "activerecord"
   spec.add_dependency "sinatra-activerecord"
