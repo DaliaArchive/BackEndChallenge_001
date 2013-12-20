@@ -14,7 +14,7 @@ module DrRoboto
 
     post '/inspectors/login' do
       raise NotAuthorized unless params[:username].present? && params[:password].present?
-      raise NotAuthorized unless inspector = Inspector.where(filter_select(params, :username, :password)).first
+      raise NotAuthorized unless inspector = Inspector.find_by(filter_select(params, :username, :password))
       status 200
       cookies[:token] = inspector.token
       { data: 'success' }.to_json

@@ -1,6 +1,8 @@
 module DrRoboto
   class User < ActiveRecord::Base
 
+    # A User can be an Inspector, a Doctor or anyone else who has some
+    # access to the Robots database.
     ROLE_INSPECTOR = 'Inspector'
     ROLE_DOCTOR = 'Doctor'
 

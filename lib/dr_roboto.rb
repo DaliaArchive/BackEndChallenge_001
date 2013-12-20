@@ -3,6 +3,7 @@ require 'active_record'
 require 'sinatra/activerecord'
 
 # Load env file configurations
+# For a list of ENV variables to configure in production see .env.development
 require 'dotenv'
 Dotenv.load ".env.#{ENV['RACK_ENV']}"
 
@@ -23,10 +24,7 @@ require 'dr_roboto/controllers/robots_controller'
 module DrRoboto
   class App < Sinatra::Base
 
-    configure :development do
-      set :show_exceptions, false
-    end
-
+    # Plug in or remove controllers here (e.g. a new DoctorsController)
     use InspectorsController
     use RobotsController
 

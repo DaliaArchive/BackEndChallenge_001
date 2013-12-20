@@ -42,6 +42,10 @@ module DrRoboto
       status 200
       { data: data }.to_json
     end
+
+    get '/robots/:name/history' do
+
+    end
     
   end
 end

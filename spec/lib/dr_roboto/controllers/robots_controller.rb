@@ -143,7 +143,7 @@ describe DrRoboto::RobotsController do
   end
 
   describe "GET /robots/:name/history" do
-
+    
   end
 
 end
