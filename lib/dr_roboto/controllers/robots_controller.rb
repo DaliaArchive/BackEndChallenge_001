@@ -13,6 +13,11 @@ module DrRoboto
       authenticate!
     end
 
+    get '/robots' do
+      robots = Robot.order('updated_at DESC')
+      { data: robots }.to_json
+    end
+
     post '/robots' do
       raise ParamsMissing unless params[:name].present?
       robot = Robot.first_or_create!(name: params[:name])
@@ -25,7 +30,7 @@ module DrRoboto
         end
       end
       status 201
-      { data: "success" }
+      { data: "success" }.to_json
     end
     
   end

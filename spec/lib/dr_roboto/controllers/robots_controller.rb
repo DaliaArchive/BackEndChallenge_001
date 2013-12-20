@@ -75,6 +75,22 @@ describe DrRoboto::RobotsController do
 
   describe "GET /robotos" do
 
+    let(:inspector) { DrRoboto::Inspector.where(username: 'inspector_gadget', password: '1234').first_or_create }
+
+    context "when robots are found in the database" do
+      before do
+        DrRoboto::Robot.destroy_all
+        @robots = (0..9).map{ |i| DrRoboto::Robot.create(name: "robot#{i}") }
+        set_cookie "token=#{inspector.token}"
+        get "/robots"
+      end
+      subject { last_response }
+      it { subject.status.should == 200 }
+      it { subject.content_type.should == 'application/json;charset=utf-8' }
+      it { JSON.parse(subject.body).key?('data').should == true }
+      it { JSON.parse(subject.body)['data'].size.should == 10 }
+    end
+
   end
 
 end
