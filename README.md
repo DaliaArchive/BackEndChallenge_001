@@ -19,19 +19,26 @@ be set to proper *environment* variables (use ``.bashrc`` or something).
 1. Clone the repository at ``git@github.com:lipanski/BackEndChallenge_001.git``.
 2. Create the databases and user credentials from your ``.env`` files.
 3. Run the migrations:
+
 ```bash
 RACK_ENV=development bundle exec rake db:migrate
 RACK_ENV=test bundle exec rake db:migrate
 ```
+
 4. You can now run the test suite:
+
 ```bash
 bundle exec rspec
 ```
+
 5. Or run a server:
+
 ```bash
 bundle exec rackup
 ```
+
 6. Or use ``rerun`` to update the server every time you change something to the code:
+
 ```bash
 bundle exec rerun rackup
 ```
@@ -39,11 +46,13 @@ bundle exec rerun rackup
 ### As a rack middleware
 
 Include the gem in your Gemfile:
+
 ```ruby
 gem 'dr_roboto', :git => 'git://github.com/lipanski/BackEndChallenge_001'
 ```
 
 Run ``bundle install`` and edit your ``routes.rb`` file, by adding the following:
+
 ```ruby
 mount DrRoboto::App => '/api'
 ```
