@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'Guests' do
-  #TODO: 404
   describe 'GET /guests/:guest_name' do
     it 'shows the parameters of the guests saved' do
       put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
@@ -17,6 +16,7 @@ describe 'Guests' do
     it 'creates a guest when one dosent exist' do
       put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
 
+      expect(response.status).to eq(204)
       get guest_path('XX1')
       expect(response.body).to eq({size: '100cm', weight: '10kg'}.to_json)
     end
@@ -26,6 +26,7 @@ describe 'Guests' do
 
       put guest_path('XX1'), {guest: {size: '101cm', eyes: '2'}}
 
+      expect(response.status).to eq(204)
       get guest_path('XX1')
       expect(response.body).to eq({size: '101cm', weight: '10kg', eyes: '2'}.to_json)
     end

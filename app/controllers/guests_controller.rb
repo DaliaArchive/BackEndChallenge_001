@@ -3,21 +3,30 @@ class GuestsController < ApplicationController
     guest = Guest.find_or_initialize(params[:name])
     guest.merge_attributes(params[:guest])
     guest.save!
+    head :no_content
   end
 
   def show
     guest = Guest.find(params[:name])
-    render json: guest.attributes
+    if guest.present?
+      render json: guest.attributes
+    else
+      head :not_found
+    end
   end
 
   def history
     guest = Guest.find(params[:name])
-    @history = guest.history
-    render formats: [:json]
+    if guest.present?
+      @history = guest.history
+      render formats: [:json]
+    else
+      head :not_found
+    end
   end
 
   def index
     @guests = Guest.all
-    render 'guests/index.json.jbuilder'
+    render formats: [:json]
   end
 end

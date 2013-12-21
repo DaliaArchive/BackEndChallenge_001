@@ -10,7 +10,7 @@ describe GuestsController do
       expect(person.attributes).to eql("age" => "100")
       expect(response.body).to be_empty
     end
-  end
+ end
 
   describe '#show' do
     it 'should find an existing guest' do
@@ -20,6 +20,12 @@ describe GuestsController do
       get :show, name: 'R2D2'
 
       expect(response.body).to eq({height: '100cm'}.to_json)
+    end
+ 
+    it 'should return a 404 if not found' do
+      get :show, name: 'non existant'
+
+      expect(response.status).to be(404) 
     end
   end
 
@@ -47,6 +53,12 @@ describe GuestsController do
 
       expect(assigns(:history)).to eq(guest.history)
       expect(assigns(:history).count).to eq(1)
+    end
+
+    it 'should return a 404 if not found' do
+      get :history, name: 'non existant'
+
+      expect(response.status).to be(404) 
     end
   end
 end

@@ -1,6 +1,6 @@
 class Change
-
   attr_reader :attribute, :from, :to
+
   def initialize params
     @attribute = params[:attribute]
     @from = params[:from]
@@ -17,6 +17,4 @@ class Change
   def to_params
     {attribute: @attribute, from: @from, to: @to}
   end
-
-
 end
