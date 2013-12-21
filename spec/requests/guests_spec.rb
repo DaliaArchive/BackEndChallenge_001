@@ -54,7 +54,7 @@ describe 'Guests' do
   end
 
   describe 'GET /guest/:guest_name/history' do
-    xit 'gives the list of changes to the guest attributes' do
+    it 'gives the list of changes to the guest attributes' do
       Timecop.freeze(Time.parse('12 Dec 2234 13:04:12')) do
         put guest_path('XX1'), {guest: {size: '100cm', weight: '10kg'}}
       end
@@ -65,18 +65,18 @@ describe 'Guests' do
 
       get history_guest_path('XX1')
       expect(response.body).to eq([
-                                      {timestamp: Time.parse('12 Dec 2234 13:04:12'),
-                                       type: 'create',
+                                      {timestamp: Time.parse('12 Dec 2234 13:04:12').utc,
+                                       type: 'created',
                                        changes: [
-                                           {attribute: 'size', old: nil, new: '100cm'},
-                                           {attribute: 'weight', old: nil, new: '10kg'}
+                                           {attribute: 'size', from: nil, to: '100cm'},
+                                           {attribute: 'weight', from: nil, to: '10kg'}
                                        ]
                                       },
-                                      {timestamp: Time.parse('12 Dec 2250 07:10:00'),
-                                       type: 'update',
+                                      {timestamp: Time.parse('12 Dec 2250 07:10:00').utc,
+                                       type: 'updated',
                                        changes: [
-                                           {attribute: 'weight', old: '10kg', new: '4kg'},
-                                           {attribute: 'ears', old: nil, new: '1'}
+                                           {attribute: 'weight', from: '10kg', to: '4kg'},
+                                           {attribute: 'ears', from: nil, to: '1'}
                                        ]
                                       },
                                   ].to_json)

@@ -39,7 +39,7 @@ describe GuestsController do
 
 
   describe '#histroy' do
-    xit 'should get the history of a guest' do
+    it 'should get the history of a guest' do
       guest = Guest.new(name: 'R2D2', attributes: {height: '100cm'})
       guest.save!
 

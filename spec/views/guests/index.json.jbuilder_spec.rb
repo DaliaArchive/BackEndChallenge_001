@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'guests/index.json.builder' do
+describe 'guests/index.json.jbuilder' do
   it 'should render the name and last_updatedd only' do
     assign(:guests, [
         double(Guest, name: 'S341', last_updated: Time.parse('12-12-12')),

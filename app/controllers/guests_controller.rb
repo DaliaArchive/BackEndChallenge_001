@@ -12,11 +12,12 @@ class GuestsController < ApplicationController
 
   def history
     guest = Guest.find(params[:name])
-    render json: guest.history
+    @history = guest.history
+    render formats: [:json]
   end
 
   def index
     @guests = Guest.all
-    render formats: [:json]
+    render 'guests/index.json.jbuilder'
   end
 end
