@@ -8,11 +8,8 @@ gem 'rails-api'
 gem 'rspec-rails'
 gem 'mongo'
 gem 'bson_ext'
-
-group :test do
-  gem 'pry-debugger'
-  gem 'timecop'
-end
+# gem 'pry-debugger'
+gem 'timecop'
 
 
 # To use ActiveModel has_secure_password
