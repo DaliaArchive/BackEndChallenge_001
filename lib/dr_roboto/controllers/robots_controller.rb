@@ -16,7 +16,7 @@ module DrRoboto
 
     post '/robots' do
       raise ParamsMissing unless params[:name].present?
-      robot = Robot.first_or_create!(name: params[:name])
+      robot = Robot.where(name: params[:name]).first_or_create!
       RobotAttribute.transaction do
         filter_reject(params, :name).each do |name, value|
           RobotAttribute.where(robot: robot, name: name).first_or_initialize.tap do |a|
