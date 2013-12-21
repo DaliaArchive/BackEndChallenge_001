@@ -77,7 +77,7 @@ describe Guest do
   end
 
   context '#history' do
-    xit 'should give the history for the guest' do
+    it 'should give the history for the guest' do
       guest = Guest.new(name: 'TSTBOT', attributes: {eyes: 101})
       guest.save!
 
@@ -103,6 +103,7 @@ describe Guest do
         history_record = guest.history.last
         expect(history_record.type).to eq('created')
         expect(history_record.guest_name).to eq('TSTBOT')
+        expect(history_record.change_set).to eq([])
       end
     end
 
@@ -128,7 +129,7 @@ describe Guest do
         history_record = guest.history.last
         expect(history_record.type).to eq('updated')
         expect(history_record.guest_name).to eq('TSTBOT')
-
+        expect(history_record.change_set).to eq([Change.new(attribute: 'eyes', from: 101, to: 99)])
       end
 
     end

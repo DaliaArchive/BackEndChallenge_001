@@ -20,6 +20,7 @@ class Guest
     params = HashWithIndifferentAccess.new(params)
     @name = params[:name]
     @attributes = params[:attributes] || {}
+    @old_attributes = @attributes.clone
     @id = params[:_id]
   end
 
@@ -60,11 +61,11 @@ class Guest
 
   def update!
     MongoStore.update!(collection, @id, to_params)
-    GuestHistory.guest_updated(self)
+    GuestHistory.guest_updated(self, ChangeSet.build(@old_attributes, attributes))
   end
 
   def create!
     MongoStore.create!(collection, to_params)
-    GuestHistory.guest_created(self)
+    GuestHistory.guest_created(self, ChangeSet.build(@old_attributes, attributes))
   end
 end
