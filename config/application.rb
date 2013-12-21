@@ -27,5 +27,6 @@ module BackEndChallenge001
 
     # Disable the asset pipeline.
     config.assets.enabled = false
+    config.secret_key_base = 'useless'
   end
 end

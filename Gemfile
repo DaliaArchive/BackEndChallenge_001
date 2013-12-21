@@ -9,11 +9,8 @@ gem 'rspec-rails'
 gem 'mongo'
 gem 'bson_ext'
 
-group :development do
-  gem 'pry-debugger'
-end
-
 group :test do
+  gem 'pry-debugger'
   gem 'timecop'
 end
 

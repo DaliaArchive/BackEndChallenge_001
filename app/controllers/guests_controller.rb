@@ -17,6 +17,6 @@ class GuestsController < ApplicationController
 
   def index
     @guests = Guest.all
-    render
+    render formats: [:json]
   end
 end
