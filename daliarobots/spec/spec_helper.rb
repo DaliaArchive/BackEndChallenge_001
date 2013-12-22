@@ -21,4 +21,17 @@ RSpec.configure do |config|
   # and want to debug it, you can fix the order by providing the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  # Configure database_cleaner for rspec tests (this application will use mongoid)
+  config.before(:suite) do
+    DatabaseCleaner[:mongoid].strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner[:mongoid].start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner[:mongoid].clean
+  end
 end
