@@ -11,7 +11,7 @@ development:
   # Configure Mongoid specific options. (optional)
   options:
     # Raise an error when performing a #find and the document is not found (default: true)
-    # raise_not_found_error: true
+    raise_not_found_error: false
 test:
   sessions:
     default:
