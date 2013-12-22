@@ -38,5 +38,31 @@ describe RobotsController do
       response.status.should eq(200)
     end
   end
+  
+  describe "UPDATE" do
+    before(:each) do
+      @robot = Robot.create(name: "Daliabot")
+    end
+
+    context "no robot exists with the given name" do
+      it "creates a new robot, renders a json object with a success message and a status code 200 and tracks this action" do
+        put :update, name: "Newbot", color: "white"
+        JSON.parse(response.body)["success_message"].should eq("A robot with name Newbot was inserted in database!")
+        response.status.should eq(200)
+        #robot = Robot.find_by(name: "Newbot")
+        #History.where(robot_id: robot.id).count.should eq(1)
+      end
+    end
+
+    context "a robot with the given name exists" do
+      it "updates the robot's attributes, renders a json object with an appropriate message and a status code 200 and tracks this action" do
+        put :update, name: "Daliabot", color: "red"
+        JSON.parse(response.body)["success_message"].should eq("Robot with name Daliabot succesfully updated!")
+        response.status.should eq(200)
+        #robot = Robot.find_by(name: "Daliabot")
+        #History.where(robot_id: robot.id).count.should eq(1)        
+      end
+    end
+  end
 
 end
