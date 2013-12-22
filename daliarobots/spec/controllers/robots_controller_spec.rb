@@ -49,8 +49,8 @@ describe RobotsController do
         put :update, name: "Newbot", color: "white"
         JSON.parse(response.body)["success_message"].should eq("A robot with name Newbot was inserted in database!")
         response.status.should eq(200)
-        #robot = Robot.find_by(name: "Newbot")
-        #History.where(robot_id: robot.id).count.should eq(1)
+        robot = Robot.find_by(name: "Newbot")
+        History.where(robot_id: robot.id).count.should eq(1)
       end
     end
 
@@ -59,8 +59,8 @@ describe RobotsController do
         put :update, name: "Daliabot", color: "red"
         JSON.parse(response.body)["success_message"].should eq("Robot with name Daliabot succesfully updated!")
         response.status.should eq(200)
-        #robot = Robot.find_by(name: "Daliabot")
-        #History.where(robot_id: robot.id).count.should eq(1)        
+        robot = Robot.find_by(name: "Daliabot")
+        History.where(robot_id: robot.id).count.should eq(1)        
       end
     end
   end

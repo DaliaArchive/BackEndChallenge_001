@@ -68,4 +68,20 @@ class RobotsController < ApplicationController
     end
   end
 
+  private
+
+    def track_action(robot_name, action, old_attributes, new_attributes)
+      updated_attributes = {}
+      if action == 'update'
+        # if track_action was called after an update, check which attribute's values are different to the old ones and only keep track of those
+        new_attributes.each { |key, value| updated_attributes[key] = "[#{old_attributes[key]}] -> [#{value.to_s}]" unless old_attributes[key] == value }
+      else
+        # if it was called after a create, all attributes are new so keep track of every single one
+        new_attributes.each { |key, value| updated_attributes[key] = "[] -> [#{value.to_s}]" }
+      end
+      robot = Robot.find_by(name: robot_name)
+      # finally, create a history for the updated or created robot along with its modified (or new) attributes
+      History.create(robot_id: robot.id, type: action, changes: updated_attributes)
+    end
+
 end
