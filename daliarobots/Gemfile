@@ -4,6 +4,8 @@ gem 'rails', '3.2.15'
 
 gem 'rails-api'
 
+gem "mongoid", "~> 3.0.0"
+
 group :development, :test do
   gem "rspec-rails"
   gem "database_cleaner"

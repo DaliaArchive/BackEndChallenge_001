@@ -30,6 +30,7 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.3)
     builder (3.0.4)
+    database_cleaner (1.2.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     hike (1.2.3)
@@ -40,7 +41,14 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mongoid (3.0.23)
+      activemodel (~> 3.1)
+      moped (~> 1.2)
+      origin (~> 1.0)
+      tzinfo (~> 0.3.22)
+    moped (1.5.1)
     multi_json (1.8.2)
+    origin (1.1.0)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -98,6 +106,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  database_cleaner
+  mongoid (~> 3.0.0)
   rails (= 3.2.15)
   rails-api
   rspec-rails
