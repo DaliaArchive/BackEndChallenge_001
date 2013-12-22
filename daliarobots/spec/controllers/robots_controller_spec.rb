@@ -65,4 +65,23 @@ describe RobotsController do
     end
   end
 
+  describe "HISTORY" do
+    before(:each) do
+      @robot = Robot.create(name: "Daliabot")
+    end
+
+    it "renders a json object with an error message and a status code 400 if no robot with the given name exists" do
+      get :history, name: "Nobot"
+      JSON.parse(response.body)["error_message"].should eq("No robot with name Nobot exists in the database!")
+      response.status.should eq(404)
+    end
+
+    it "renders a json object with the robot history and a status code 200 if a robot with the given name exists" do
+      get :history, name: "Daliabot"
+      robot_history = History.where(robot_id: @robot.id)
+      response.body.should eq(robot_history.to_json(:except => [:_id, :robot_id]))
+      response.status.should eq(200)
+    end
+  end
+
 end

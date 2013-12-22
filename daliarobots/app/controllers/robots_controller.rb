@@ -55,4 +55,17 @@ class RobotsController < ApplicationController
     end
   end
 
+  def history
+    robot = Robot.find_by(name: params[:name])
+
+    respond_to do |format|
+      if robot
+        robot_history = History.where(robot_id: robot.id)
+        format.json { render :json => robot_history.to_json(:except => [:_id, :robot_id]), status: 200 }
+      else
+        format.json { render :json => { error_message: "No robot with name #{params[:name]} exists in the database!" }, status: 404  }
+      end
+    end
+  end
+
 end
