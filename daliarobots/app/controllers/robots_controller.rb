@@ -39,7 +39,7 @@ class RobotsController < ApplicationController
         if robot.update_attributes(params.except(:action, :controller).merge(last_update: DateTime.now))
           format.json { render :json => { success_message: "Robot with name #{params[:name]} succesfully updated!" }, status: 200 }
           # finally, track this update action and the cloned attributes
-          #track_action(robot_name, 'update', old_attributes, params.except(:action, :controller) )
+          track_action(robot_name, 'update', old_attributes, params.except(:action, :controller) )
         else
           format.json { render :json => robot.errors.to_json, error_message: "Robot with name #{params[:name]} could not be updated", status: 400 }
         end
@@ -48,7 +48,7 @@ class RobotsController < ApplicationController
       # if such a robot does not exist in the database create one with all the attributes passed in the request
       robot = Robot.create(params.except(:action, :controller))
       # and track this create action (passing nil for the old_attributes feels wrong but it saves me from ugly-looking code on line 71)
-      #track_action(robot_name, 'create', nil, params.except(:action, :controller))
+      track_action(robot_name, 'create', nil, params.except(:action, :controller))
       respond_to do |format|
         format.json { render :json => { success_message: "A robot with name #{params[:name]} was inserted in database!" }, status: 200 }
       end
