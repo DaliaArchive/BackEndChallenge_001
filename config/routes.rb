@@ -2,8 +2,8 @@ RobotCenter::Application.routes.draw do
 
   resources :robots do 
     get 'showrobot/:name' => 'robots#show', :as => :showrobot, :on => :collection
-    post 'createrobot' => 'robots#create', :on => :collection, :defaults => { :format => 'xml' }
-    put 'updaterobot/:name' => 'robots#update', :as => :updaterobot, :on => :collection, :defaults => { :format => 'xml' }
+    post 'createrobot' => 'robots#create', :on => :collection, :defaults => { :format => 'json' }
+    put 'updaterobot/:name' => 'robots#update', :as => :updaterobot, :on => :collection, :defaults => { :format => 'json' }
     get 'editrobot/:name' => 'robots#edit', :on => :collection
     get 'history/:name' => 'robothistories#show', :on => :collection
   end

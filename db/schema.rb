@@ -24,15 +24,9 @@ ActiveRecord::Schema.define(:version => 20131211201016) do
 
   create_table "robots", :force => true do |t|
     t.string   "name"
-    t.string   "size"
-    t.string   "weight"
-    t.string   "status"
-    t.string   "color"
-    t.string   "age"
-    t.string   "eyes_number"
-    t.string   "antenna_number"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.text     "robot_datas"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "robots", ["name"], :name => "index_robots_on_name", :unique => true

@@ -1,20 +1,15 @@
 Robot Day Care Center API USAGE DOCUMENT
 ___________________________________________________________________
 Content Type :
-   application/xml
+   application/json
 
 Body:
-   Please pass xml in Body
+   Please pass json in Body
    
-   Sample xml body
+   Sample json body
+	{"robot":{"name":"robotname","robot_datas":{"color":"white"}}}
 
-    <robot>
-      <name>xx1</name>
-      <size>100</requiresize>
-      <color>white</color>
-    </robot>
-
-NOTE : Content Type should be set to application/xml for xml data in body 
+NOTE : Content Type should be set to application/json for json data in body 
 
 API Requests:
 
@@ -28,17 +23,19 @@ API Requests:
    url: http://0.0.0.0:3000/robots/showrobot/:name
    method: GET
    body : not needed
-   return type : json
+   return type : json, response code 204 means the robot is not exist
 
 => Creating robot
    url: http://0.0.0.0:3000/robots/
    method: Post
-   Body : xml, name is unique and require
+   Body : json, name is unique and require
+   return code : expect 201, reponse 422 means useing exist robot name or not give a name value
 
 => Updating robot
    url: http://0.0.0.0:3000/robots/updaterobot/:name
    method: PUT
-   Body : xml, name is unique so can't be changed.
+   Body : json, name is unique so can't be changed.
+   return code expect 200, if response 204 will be not exist robot name or not give a name value
    
 => Robot's history
    url: http://0.0.0.0:3000/robots/history/:name
@@ -51,18 +48,12 @@ DB columns
 	Table name : robots 
 	Columns:
 		name : string
-		size : string
-		weight : string
-		status : string
-		color : string
-		age : string
-		eyes_number : string
-		antenna_number : string
+		robot_datas : text
+		
+		name is unique
 		
 	Table name : robothistories
       robot_id : integer, reference to robot's id
       status : string
       field : string
       value : string
-
-      t.timestamps

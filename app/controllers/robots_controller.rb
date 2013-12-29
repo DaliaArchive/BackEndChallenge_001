@@ -1,6 +1,6 @@
 class RobotsController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  respond_to :xml
+  respond_to :json
   
   def index
     @robots = Robot.select('name,created_at').all  
@@ -9,61 +9,50 @@ class RobotsController < ApplicationController
 
   def show
     @robot = Robot.where(:name => params[:name]).first
-    render :json => @robot.to_json
-  end
-
-  def new
-    @robot = Robot.new
-  end
-
-  def edit
-    @robot = Robot.where(:name => params[:name]).first
+    if @robot
+      render :json => @robot.to_json
+    else
+      render :nothing => true, :status => :no_content 
+    end
   end
 
   def create
-    @robot = Robot.new(params[:robot])
+    @robot = Robot.new
+    @robot.name = params[:robot][:name] if params[:robot][:name].present?
+    @robot.robot_datas = params[:robot][:robot_datas].to_json if params[:robot][:robot_datas].present?
+
     if @robot.save
-      params[:robot].each do |key, value|
-        if value.present?
-          @robothistory = Robothistory.new
-          @robothistory.status='create'
-          @robothistory.robot_id = @robot.id
-          @robothistory.field=key
-          @robothistory.value=value
-          @robothistory.save
-        end
-      end
-      render :xml => @robot, :status => :created 
+      Robot.create_robot(params[:robot], @robot.id)
+      render :json => @robot, :status => :created 
     else
-      render :xml => @robot.errors, :status => :unprocessable_entity 
+      render :json => @robot.errors, :status => :unprocessable_entity 
     end
-    
-    
-    #respond_with @robot,  :location => showrobot_robots_path(@robot.name)
   end
 
   def update
-    @robot = Robot.where(:name => params[:name]).first  
-    @org_robot = Robot.where(:name => params[:name]).first  
-
-    if @robot.update_attributes(params[:robot])
-      if params[:robot].present?
-        params[:robot].each do |key, value|
-          if value.present?
-            if @org_robot["#{key}"] != value
-              @robothistory = Robothistory.new 
-              @robothistory.status='update'
-              @robothistory.robot_id = @robot.id
-              @robothistory.field=key
-              @robothistory.value=value
-              @robothistory.save
-            end
+    if @robot = Robot.where(:name => params[:name]).first 
+      data_hash={}
+      data_hash = ActiveSupport::JSON.decode(@robot.robot_datas) if  @robot.robot_datas.present?#for management robot_datas
+      update_hash={} #for save change column and value
+      if params[:robot][:robot_datas].present?
+        params[:robot][:robot_datas].each do | key, value |
+          if data_hash["#{key}"] != value.to_s || data_hash["#{key}"].blank?
+            update_hash["#{key}"] = value
           end
+          data_hash["#{key}"] = value
         end
       end
-      render :xml => @robot, :status => :ok 
+      
+      @robot.robot_datas=data_hash.to_json
+      
+      if @robot.save
+        Robot.update_checking(update_hash, @robot.id)
+        render :json => @robot, :status => :ok 
+      else
+        render :json => @robot.errors, :status => :unprocessable_entity
+      end
     else
-      render :xml => @robot.errors, :status => :unprocessable_entity
+      render :nothing => true, :status => :no_content 
     end
   end
 end
