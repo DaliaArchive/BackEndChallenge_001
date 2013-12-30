@@ -35,7 +35,7 @@ postgres=# \password robolandia
 
 Run the migrations:
 
-RACK_ENV=development bundle exec rake db:migrate
+RACK_ENV=production bundle exec rake db:migrate
 RACK_ENV=test bundle exec rake db:migrate
 
 ### Dependencies
