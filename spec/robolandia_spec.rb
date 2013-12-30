@@ -56,4 +56,34 @@ describe "Robolandia app" do
 
   end
 
+  describe "GET /robots/:id.json" do  
+
+    context "when providing a valid auth" do 
+
+      context "but an unavailable robot id" do
+
+        it "should return unavailable resource HTTP code" do 
+          authorize 'inspector', 'g76F&h8'            
+          get '/robots/1.json'
+          last_response.status.should == 404
+        end
+
+      end
+
+      context "and a existent robot id" do 
+
+        it "should return the robot attributes" do       
+          authorize 'inspector', 'g76F&h8'
+          robot = Robot.create!({ attrs: { "name" => "API GET ROBOT" }, history: nil })
+          get "/robots/#{robot.id}.json"
+          last_response.should be_ok        
+          expect(JSON.parse(last_response.body)["name"]).to eq("API GET ROBOT")
+        end
+
+      end
+
+    end
+
+  end
+
 end
