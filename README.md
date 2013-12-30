@@ -46,11 +46,7 @@ To install all the dependencies just do a `bundle install`.
 
 bundle exec rspec
 
-You can make your own decision on the details of your API. You can define the URLs, request methods, headers, response types, response formats, etc.
-
-You don't even have to follow the information structures showed in the examples above. Use whatever structure you think is best, however just make sure that your proposition includes all the information in the examples.
-
-## Running production environment
+## Running Robolandia in production environment
 
 rackup config.ru
 
