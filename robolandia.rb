@@ -24,7 +24,9 @@ class Robolandia < Sinatra::Base
   $log.info "#{Time.now.to_s(:db)} Robolandia is now accepting json requests."
 
   get '/robots.json' do                
-     
+    robots = {}
+    Robot.all.each { |robot| robots[robot.id] = robot.attrs.merge(last_update: robot.updated_at.to_s) }       
+    robots.to_json     
   end
 
   get '/robots/:id.json' do    
