@@ -129,6 +129,36 @@ describe "Robolandia app" do
 
       end
 
+    end
+
+  end
+
+  describe "GET /robots/:id/history.json" do 
+
+    context "when providing valid auth" do
+
+      context "for an existent robot id" do
+
+        it "should return the robot changes history" do 
+          authorize 'inspector', 'g76F&h8'         
+          robot = Robot.create(1, { "name" => "History Robot" })           
+          get "/robots/#{robot.id}/history.json"
+          last_response.should be_ok
+          expect(JSON.parse(last_response.body)[robot.updated_at.utc.to_s]["type"]).to eq("create")
+          expect(JSON.parse(last_response.body)[robot.updated_at.utc.to_s]["changes"]["name"]).to eq("'' to '#{robot.attrs['name']}'")                    
+        end
+
+      end
+
+      context "for an invalid robot id" do 
+
+        it "should return unavailable resource http code" do
+          authorize 'inspector', 'g76F&h8'            
+          get '/robots/1/history.json'
+          last_response.status.should == 404
+        end      
+
+      end
 
     end
 

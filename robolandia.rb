@@ -45,7 +45,9 @@ class Robolandia < Sinatra::Base
   end
 
   get '/robots/:id/history.json' do        
-    
+    robot = Robot.find_by_id params[:id]      
+    return status 404 unless robot
+    robot.get_history.to_json  
   end
 
 end
