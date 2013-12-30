@@ -86,4 +86,52 @@ describe "Robolandia app" do
 
   end
 
+  describe "PUT /robots/:id.json" do
+    
+    context "when providing valid auth" do
+
+      context "but passing data with an invalid format (other than JSON)" do 
+
+        it "should respond with" do
+          authorize 'inspector', 'g76F&h8'
+          put "/robots/1.json"         
+          JSON.parse(last_response.body)["error"].should == "unsupported format"
+        end
+
+      end
+
+      context "for an existing robot id" do 
+
+        it "should update the existent robots attributes" do          
+          authorize 'inspector', 'g76F&h8'     
+          robot = Robot.create!({ attrs: { "name" => "API PUT ROBOT" }, history: nil })
+          robot.attrs["name"].should == "API PUT ROBOT"          
+          request_data = { "name" => "API PUT CHANGE ROBOT", "last" => "Testing" }
+          put "/robots/#{robot.id}.json", request_data.to_json, headers
+          robot.reload                
+          robot.attrs["name"].should == "API PUT CHANGE ROBOT"        
+          # test for the returned robot oject
+          JSON.parse(last_response.body)["attrs"]["name"].should == "API PUT CHANGE ROBOT"  
+        end      
+
+      end
+
+      context "for a nonexistent robot id" do
+
+        it "should create a new robot with the specified attributes" do 
+          authorize 'inspector', 'g76F&h8'
+          request_data = { "name" => "New robot", "last name" => "new robot last name" }          
+          Robot.all.size.should == 0
+          put "/robots/1.json", request_data.to_json, headers
+          Robot.all.size.should == 1
+          JSON.parse(last_response.body)["attrs"]["name"].should == "New robot"
+        end
+
+      end
+
+
+    end
+
+  end
+
 end

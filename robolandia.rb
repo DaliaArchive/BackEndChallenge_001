@@ -36,7 +36,12 @@ class Robolandia < Sinatra::Base
   end
 
   put '/robots/:id.json' do            
-    
+    return { error: "unsupported format" }.to_json unless request.content_type == "application/json"         
+    id = params['id']        
+    params = JSON.parse(request.env["rack.input"].read)    
+    robot = Robot.find_by_id id
+    robot = robot ? robot.update(params) : Robot.create(id, params)    
+    robot.to_json 
   end
 
   get '/robots/:id/history.json' do        
