@@ -1,154 +1,79 @@
-# BackEnd Challenge 001
+# Robolandia
 
-For us, it is not all about the CV or titles. The most important for us is to know how you face a concrete challenge and how you approach it. What is your way of thinking, how do you tackle the problem, which tools do you choose, ...
+Robolandia is a JSON API for "The robot's daycare center". It is built on top of sinatra and the only format supported is JSON.
 
-In order to understand all this, we would like you to complete the following challenge. This is a simplified case which illustrates the kinds of situations we have to deal with on a daily basis.
+It is very easy to extend the API by supporting other format's.
 
-This is a good opportunity to demonstrate your style and your capabilities. It is a way to show us which kind of code you like to create.
+## Note
 
-There are no time limitations but we suggest you don't spend more than a few hours on it. We are not looking for a bullet-proof solution but it has to be an elegant, clean, maintainable and intuitive approach.
+Robolandia uses basic access authentication (Basic HTTP Auth). User and pass can be found in the file auth.yml.
+Basic HTTP Auth has some problems (plain text over the wire) and it wouldn't be used in a real production application but other mechanisms such as OAuth seems overkill for an API and for the purpose of the challenge.
 
-Create it in your own way and use the tools you are most comfortable with. Show us your skills.
+## Installation
 
-## Challenge Description
+### Setting Up PostgreSQL - Ubuntu 13.04
 
-### The robots' daycare center
+Robolandia uses PostgreSQL for data persistence. A new feature in PostgreSQL 9.2 is JSON support. It includes a JSON data type and two JSON functions. This is very useful for a JSON API like Robolandia.
 
-Citizens are getting more and more used to having robots around on a day to day basis. They build very strong relationship with them, however robots are also getting old and start to malfunction at one point. When this time comes, they are not self-sufficient anymore and you have to choose between "terminating" them or taking care of them until their vital functions stop working indefinitely.
+Since there isn't an official PostgreSQL repository for Ubuntu 13.04, a small work-around is needed:
 
-Taking care of a malfunction robot is a time-consuming task and in our busy society not every person has the time to do so. Thats why we are building the _Robot's daycare center_.
+sudo sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql-common -t raring
+sudo apt-get install postgresql-9.2 libpq-dev
 
-The robot's daycare centers are subsidised by the government and in order for them to benefit from this program, they need to give government inspectors access to their database of _guests_.
+## Configuration
 
+### Database
 
-### The inspectors API
+The file database.yml has all the configuration needed for the production and test environments. 
 
-The inspectors come to our center and check our _guests_ one by one and update the database.
+sudo -u postgres createuser robolandia
+sudo -u postgres psql
+postgres=# \password robolandia
 
-As the inspectors are robots their selves, they don't use a web browser to communicate with our system, but a very simple API that we have to implement for them.
+Run the migrations:
 
-The API has 4 methods:
+RACK_ENV=development bundle exec rake db:migrate
+RACK_ENV=test bundle exec rake db:migrate
 
-#### _[Update]_ update a robot's attributes
+### Dependencies
 
-1. The inspector sends the attributes for a specific robot.
-2. Our system detects if the robot is already in our database or not. If not, we create it and if yes, we go directly to the next step.
-3. We update the robot's attributes, only changing the ones included in the actual update request.
+To install all the dependencies just do a `bundle install`.
 
-##### Example
+## Testing with RSpec
 
-The robot _XX1_ is already in our system and has the following attributes: 
-
-- size: 100cm
-- weight: 10kg 
-- status: good conditions
-- color: white
-- age: 123years
-
-The inspector checks the robot and decides to update his attributes and sends the following information:
-
-- color: dirty white
-- age: 124years
-- number of eyes: 1
-- number of antenna: 2
-
-The robot _XX1_ now has these attributes: 
-
-- size: 100cm
-- weight: 10kg 
-- status: good conditions
-- color: dirty white
-- age: 124years
-- number of eyes: 1
-- number of antennas: 2
-
-Be aware that the attributes are not predefined and can be anything on both sides: key and value.
-
-#### _[Show]_ get a robot's actual attributes
-
-The inspector wants to know about the actual attributes of a robot
-
-##### Example
-
-The inspector asks for the robot _XX1_ and the system responses with the following information:
-
-- size: 100cm
-- weight: 10kg 
-- status: good conditions
-- color: dirty white
-- age: 124years
-- number of eyes: 1
-- number of antennas: 2
-
-#### _[Index]_ get a list of all the robot's in our database
-
-The inspector wants to have an overview of all the robot's in our database.
-
-##### Example
-
-The inspector makes the call and the system responses with the following information:
-
-- 1
-	- name: XX1
-	- last_update: 2113-12-01
-
-- 2
-	- name: XX2
-	- last_update: 2113-12-03
-
-- 3
-	- name: XX3
-	- last_update: 2113-12-12
-	
-#### _[History]_ get a robot's attributes changes
-
-The inspector is interested in knowing about the evolution of the robot, so he asks for the changes on the attributes that have been done for this specific robot.
-
-##### Example:
-
-The inspector asks for the history of the robot _XX1_, the system responses with the following information:
-
-- 2112-11-28 10:23:24
-	- type: create
-	- changes: 
-		- size: [] -> [100cm]
-		- weight: [] -> [10kg]
-		- status: [] -> [good conditions]
-		- color: [] -> [white]
-		- age: [] -> [123years]
-
-- 2113-12-02 16:30:11
-	- type: update
-	- changes:
-		- color: [white] -> [dirty white]
-		- age: [123years] -> [124years]
-		- number of eyes: [] -> [1]
-		- number of antennas: [] -> [2]
-
-
-### The API details
+bundle exec rspec
 
 You can make your own decision on the details of your API. You can define the URLs, request methods, headers, response types, response formats, etc.
 
 You don't even have to follow the information structures showed in the examples above. Use whatever structure you think is best, however just make sure that your proposition includes all the information in the examples.
 
-### Programming Requirements
+## Running production environment
 
-Must be Ruby... frameworks, gems, databases are all up to you.
+rackup config.ru
 
-### What we assess
+## Curl examples
 
-- Legible, understandable and maintainable code
-- Wisely choosen tools, techniques and/or frameworks
+### Create a robot with id 1
 
-## Submission Instructions
+curl --request PUT 'http://localhost:9292/robots/1.json' --data '{ "first_name": "Bart", "last_name": "Simpson"}' --header 'Content-Type:application/json' -u inspector:'g76F&h8'
 
-1. Fork this project
-1. Complete the task and push on your own fork. (Nice, atomic and iterative commits are welcome)
-1. Include instructions of how we can make it to work
-1. Submit a pull request
-1. Send an email to hr@daliaresearch.com to review your solution
+### Get a specific robot by id 
 
-And of course: don't hesitate to **contact us with any question** you have, better use for this our _IT_ email: [it@daliaresearch.com](mailto:it@daliaresearch.com)
+curl --request GET 'http://localhost:9292/robots/1.json' -u inspector:'g76F&h8'
+
+### Change attributes of existent robot 
+
+curl --request PUT 'http://localhost:9292/robots/1.json' --data '{ "last_name": "Barney", "age": "25" }' --header 'Content-Type:application/json' -u inspector:'g76F&h8'
+
+### Get robot history
+
+curl --request GET 'http://localhost:9292/robots/1/history.json' -u inspector:'g76F&h8'
+
+### Get all available robots
+
+curl --request GET 'http://localhost:9292/robots' -u inspector:'g76F&h8'
 
 
