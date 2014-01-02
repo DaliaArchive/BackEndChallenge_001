@@ -1,0 +1,1 @@
+rerun -- bundle exec thin -p 3000 start
