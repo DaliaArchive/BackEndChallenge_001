@@ -16,7 +16,7 @@ class Robot
   
   def self.find(name)
     existing_robot = @store.find_by_name(name)
-    existing_robot ? existing_robot : {} 
+    existing_robot ? existing_robot.delete_if{|k,v| k == "_id"} : {} 
   end
     
 end

@@ -17,6 +17,11 @@ class App < Sinatra::Base
   put '/robots/?' do
     Robot.save(JSON.parse(request.body.read))
   end
+  
+  get '/robots/:name' do
+    Robot.find(params[:name])
+  end
+  
 
 
 end
