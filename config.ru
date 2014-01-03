@@ -1,4 +1,5 @@
 require 'rubygems'
 require './app/app'
 
-run App
+
+run Rack::URLMap.new("/" => App.new)

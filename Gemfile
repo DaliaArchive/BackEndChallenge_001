@@ -5,6 +5,8 @@ gem 'sinatra', "~>1.4"
 
 gem 'thin'
 gem 'json'
+gem 'mongo'
+gem 'bson_ext'
 
 group :development, :test do
   gem 'rerun'
