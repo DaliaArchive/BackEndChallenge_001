@@ -23,7 +23,12 @@ describe Robot do
         robot1.save.should include "status" => "ok"
       end
       
-      it "should init maintenance tracking"
+      it "should init maintenance tracking" do
+        robot1 = Robot.create!(robot)
+        robot1.save
+        Robot.store.history_by_name("Hal").first.should include "type" => "create"
+        Robot.store.history_by_name("Hal").first["log"].should include "name" => "[] -> [Hal]"
+      end
     end
 
     context "robot already was at maintenance" do
@@ -43,7 +48,25 @@ describe Robot do
         robot2.save.should include "status" => "ok"
       end
       
-      it "should maintain change"
+      it "should maintain change in history" do 
+        robot1 = Robot.create!(robot)
+        robot1.save
+        robot2 = Robot.create!(robot_updated)      
+        robot2.save
+        Robot.store.history_by_name("Hal").last.should include "type" => "update"
+        Robot.store.history_by_name("Hal").last["log"].should include "age" => "[1500 100 900] -> [13]"
+      end
+
+      it "should not list keys for nested hashes with empty values" do 
+        robot = {"name"=> "newborn", "date_of_assembly" => {"year" => "2013", "month" => "Dec"}}
+        robot_updated = {"name"=> "newborn", "date_of_assembly" => {"year" => "2013", "month" => "Dec"}}
+        robot1 = Robot.create!(robot)
+        robot1.save
+        robot2 = Robot.create!(robot_updated)      
+        robot2.save
+        Robot.store.history_by_name("newborn").last["log"].should_not include "date_of_assembly" => "{}"
+      end
+
     end
 
     context "last_update should be modified for each update operation" do

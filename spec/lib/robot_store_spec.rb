@@ -24,6 +24,24 @@ describe RobotStore do
     end
   end
   
+  context "#create_history" do
+    let(:history1) { {"name" => name1, "type" => "create"} }
+    let(:history2) { {"name" => name2, "type" => "create"} }
+
+    it "should return status ok" do
+      robot_store.create_history(history1).should include "status" => "ok"
+    end
+    
+    it "should create new entries each time" do
+      robot_store.create_history(history1)
+      robot_store.create_history(history2)
+      id1 = robot_store.history_by_name(name1).first["_id"]
+      id2 = robot_store.history_by_name(name2).first["_id"]
+      id1.should_not == id2
+    end
+  end
+  
+  
   context "#update" do
     it "should add new k/v pairs to entry" do
       robot_store.create(robot1)
@@ -44,20 +62,6 @@ describe RobotStore do
     end
   end
   
-  # context "#find" do
-  #   it "should return a robot hash if found" do
-  #     id = robot_store.create(robot)
-  #     robot_store.find(id).should == {"name" => "Hal", "_id" => id}
-  #   end
-  #   
-  #   it "should return nil if no robot found" do
-  #     id = robot_store.create(robot)
-  #     string_id = id.to_s
-  #     invalid_id = string_id[-1] == 0 ? string_id[0..-2] << "1" : string_id[0..-2] << "0"
-  #     robot_store.find(BSON::ObjectId.from_string(invalid_id)).should be_nil
-  #   end
-  # end
-  
   context "#find_by_name" do    
     it "should return a robot hash if found" do
       robot_store.create(robot1)
@@ -67,6 +71,19 @@ describe RobotStore do
     it "should return nil if no robot found" do
       id = robot_store.create(robot1)
       robot_store.find_by_name("Halifax").should be_nil
+    end
+  end
+  
+  context "#history_by_name" do    
+    let(:history1) { {"name" => name1, "type" => "create"} }
+
+    it "should return an array of entries if found" do
+      robot_store.create_history(history1)
+      robot_store.history_by_name(name1).first["type"].should == "create"
+    end
+    
+    it "should return nil if no robot found" do
+      robot_store.history_by_name(name1).should be_nil
     end
   end
 end

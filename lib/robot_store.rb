@@ -5,6 +5,7 @@ class RobotStore
   def initialize
     collections = open
     @robots = collections["robots"]
+    @history = collections["history"]
   end
 
   def create(attributes)
@@ -16,7 +17,7 @@ class RobotStore
       {"status" => "error", "info" => "Internal Error"}
     end
   end
-  
+    
   def update(name, attributes)
     begin
       @robots.update({"name" => name}, {"$set" => attributes})
@@ -27,10 +28,25 @@ class RobotStore
     end
   end
   
+  def create_history(attributes)
+    robot = attributes.reject {|_, v| v.nil?}
+    begin
+      @history.insert(robot)
+      {"status" => "ok", "info" => "Entry created"}
+    rescue Mongo::OperationFailure
+      {"status" => "error", "info" => "Internal Error"}
+    end    
+  end
+    
   def find_by_name(name)
     r = @robots.find("name" => name).to_a.first
     r ? r : nil
   end
+
+  def history_by_name(name)
+    r = @history.find("name" => name).to_a
+    r.empty? ? nil : r
+  end  
   
   def find_all
     @robots.find.to_a.map{|e| print e}.join("\n")
