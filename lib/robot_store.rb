@@ -1,6 +1,5 @@
 require "mongo"
 
-
 class RobotStore
 
   def initialize
@@ -12,22 +11,20 @@ class RobotStore
     robot = attributes.reject {|_, v| v.nil?}
     begin
       @robots.insert(robot)
+      {"status" => "ok", "info" => "Entry created"}
     rescue Mongo::OperationFailure
-      nil
+      {"status" => "error", "info" => "Internal Error"}
     end
   end
   
-  def update(id, attributes)
+  def update(name, attributes)
     begin
-      @robots.update({"_id" => id}, {"$set" => attributes})
-    rescue Mongo::OperationFailure
+      @robots.update({"name" => name}, {"$set" => attributes})
+      {"status" => "ok", "info" => "Entry updated"}
+    rescue Mongo::OperationFailure        
       raise RuntimeError # Error updating data in db
+      {"status" => "error", "info" => "Internal Error"}
     end
-  end
-  
-  def find(id)
-    r = @robots.find_one("_id" => id)
-    r ? r : nil
   end
   
   def find_by_name(name)
@@ -35,9 +32,9 @@ class RobotStore
     r ? r : nil
   end
   
-  def robot_store
-    
-  end 
+  def find_all
+    @robots.find.to_a.map{|e| print e}.join("\n")
+  end
   
   private
 

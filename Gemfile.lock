@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    awesome_print (1.2.0)
     bson (1.9.2)
     bson_ext (1.9.2)
       bson (~> 1.9.2)
@@ -45,6 +46,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   bson_ext
   json
   mongo

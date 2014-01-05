@@ -8,6 +8,8 @@ gem 'json'
 gem 'mongo'
 gem 'bson_ext'
 
+gem 'awesome_print'
+
 group :development, :test do
   gem 'rerun'
   gem 'rspec-mocks', '>=2.9.0'
