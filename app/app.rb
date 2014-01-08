@@ -4,10 +4,10 @@ require_relative 'robot'
 
 class App < Sinatra::Base
   
-  get '/' do 
-    "Hello Daliaresearch"
+  use Rack::Auth::Basic do |username, password|
+    username == 'foo' && password == 'bar'
   end
-
+  
   post '/robots/?' do
     robot = Robot.create!(JSON.parse(request.body.read))
     robot.save.to_json
@@ -30,3 +30,4 @@ class App < Sinatra::Base
     Robot.find_history(params[:name]).to_json
   end
 end
+

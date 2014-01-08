@@ -1,4 +1,60 @@
 # BackEnd Challenge 001
+##notes from developer
+
+I assume that I can make suggestion related to information structures, as expalined in the task. 
+Therefore I introduced two improvements. 
+
+1. In history for particular robot I removed time as a key from hash representation. I assume that db will return items sorted. 
+
+
+- - type: create
+  - time: 2112-11-28 10:23:24
+	- changes: 
+		- size: [] -> [100cm]
+		- weight: [] -> [10kg]
+		- status: [] -> [good conditions]
+		- color: [] -> [white]
+		- age: [] -> [123years]
+
+- - type: update
+  - time: 2113-12-02 16:30:11
+	- changes:
+		- color: [white] -> [dirty white]
+		- age: [123years] -> [124years]
+		- number of eyes: [] -> [1]
+		- number of antennas: [] -> [2]
+
+
+2. In index - I removed iterator. Each robot which calls such API can navigate trough arrays and does not need such support. 
+
+-	- name: XX1
+	- last_update: 2113-12-01
+
+-	- name: XX2
+	- last_update: 2113-12-03
+
+- - name: XX3
+	- last_update: 2113-12-12
+
+
+Robot class is ActiveRecord like. 
+
+In case of embedded attributes history shows change only to changed nested attributes thanks to #difference and #format_deep_difference methods. 
+
+I used pure 'mongo' gem. Shure I could use MongoMapper or MongoID, but just to show that it's easy to use pure MongoDB in Sinatra. 
+
+Now "name" key is used as primary key for all Robot class operation. However I keep "_id" which may be useful later. 
+
+
+Application has a taste of safety thanks to Rack authentication abilities. However not authenticated users still can knock to '/' to say Hello to DaliaResearch. 
+
+This API was not proven in working environment. Therefore I suggested to call it 'api_v1'. This trick gives opportunity to think out better solution for next generation robodoctors in future while current one still can work on api_v1 version.   
+
+
+
+
+
+
 
 For us, it is not all about the CV or titles. The most important for us is to know how you face a concrete challenge and how you approach it. What is your way of thinking, how do you tackle the problem, which tools do you choose, ...
 
