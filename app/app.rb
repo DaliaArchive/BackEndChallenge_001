@@ -18,10 +18,15 @@ class App < Sinatra::Base
     robot.save.to_json
   end
   
-  get '/robots/:name' do
+  get '/robots/?' do
+    Robot.index.to_json
+  end
+  
+  get '/robots/:name/?' do
     Robot.find(params[:name]).to_json
   end
   
-
-
+  get '/robots/:name/history/?' do
+    Robot.find_history(params[:name]).to_json
+  end
 end

@@ -49,7 +49,7 @@ class RobotStore
   end  
   
   def find_all
-    @robots.find.to_a.map{|e| print e}.join("\n")
+    @robots.find.to_a
   end
   
   private
