@@ -27,8 +27,8 @@ class Robot < Hash
   
   def self.find(name)
     existing_robot = store.find_by_name(name)
-    existing_robot = existing_robot ? Robot.new(existing_robot.delete_if {|k, v| k == "_id"}) : nil   
-    existing_robot
+    result = existing_robot.nil? ? nil : existing_robot.delete_if {|k, v| k == "_id"}
+    {"status" => "ok", "robot" => result}
   end
   
   def self.find_history(name)
@@ -36,7 +36,8 @@ class Robot < Hash
     if history.nil?
       {"status" => "ok", "info" => "No such robot in database"}
     else
-      history.map{|history_entry| history_entry.delete_if{|key,value| key == "_id"}}
+      response = history.map{|history_entry| history_entry.delete_if{|key,value| key == "_id"}}
+      {"status" => "ok", "history" => response}
     end
   end
   
@@ -45,13 +46,12 @@ class Robot < Hash
     if robots.empty?
       {"status" => "ok", "info" => "No robots in database"}
     else
-      result = {}
-      robots.map{|robot| result[robot["name"]] = robot["last_update"].to_s}
-      result
+      response = robots.map{|robot| robot.select{|key,value| %w{name last_update}.include?(key)}}
+      {"status" => "ok", "robots" => response}
     end
   end
   
-  def to_json
+  def jsonize
     @attrs.to_json
   end
   

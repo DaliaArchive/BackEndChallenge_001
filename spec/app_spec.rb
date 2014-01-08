@@ -14,7 +14,7 @@ describe App do
   context "post /robots" do
     it "should add/update robot to db" do
       post '/robots/', {"name" => "Hal", "age" => "3"}.to_json, as_json
-      Robot.find("Hal")["age"].should == "3"
+      Robot.find("Hal")["robot"]["age"].should == "3"
       last_response.should be_ok
     end
   end
@@ -23,8 +23,8 @@ describe App do
     it "should pass robot info" do
       Robot.create!("name" =>"Hal", "age" => "123").save
       get '/robots/Hal'
-      last_response.body.should include("123")
       last_response.should be_ok
+      last_response.body.should include("123")
     end
     
     it "should not pass db id" do

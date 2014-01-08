@@ -71,18 +71,18 @@ describe Robot do
       
       it "should return a hash with robot data" do
         Robot.create!(robot).save
-        Robot.find("Hal")["age"].should == "1500 100 900"
+        Robot.find("Hal")["robot"]["age"].should == "1500 100 900"
       end
       
       it "should not propagate internal db id" do
         Robot.create!(robot).save
-        Robot.find("Hal")["_id"].should be_nil
+        Robot.find("Hal")["robot"]["_id"].should be_nil
       end
     end
     
     context "robot with particular id was not found in store" do
       it "should return empty hash" do
-        Robot.find("R2D2").should == nil
+        Robot.find("R2D2")["robot"].should == nil
       end
     end
   end
@@ -93,19 +93,19 @@ describe Robot do
       
       it "should return a hash with robot data" do
         Robot.create!(robot).save
-        Robot.find_history("Hal").first["type"].should == "create"
+        Robot.find_history("Hal")["history"].first["type"].should == "create"
       end
       
       it "should maintain each change, which affected robot" do
         Robot.create!(robot).save
         Robot.create!(robot_updated).save
-        Robot.find_history("Hal").last["log"]["age"].should == "[1500 100 900] -> [13]"        
+        Robot.find_history("Hal")["history"].last["log"]["age"].should == "[1500 100 900] -> [13]"        
       end
 
       it "should not propagate internal db id" do
         Robot.create!(robot).save
         Robot.create!(robot_updated).save
-        Robot.find_history("Hal").last["_id"].should be_nil
+        Robot.find_history("Hal")["history"].last["_id"].should be_nil
       end
     end
     
@@ -121,12 +121,12 @@ describe Robot do
     let(:another_robot) { {"name" => "R2D2"} }
 
     context "there is at least one robot" do
-      it "should return hash containing name -> last update key/value pairs" do
+      it "should return array of hashes containing name and last update " do
         Robot.create!(robot).save
         Robot.create!(another_robot).save
         result = Robot.index
-        result["Hal"].should_not == "a long long time ago" # as save operation modifies last_update
-        result["R2D2"].should_not be_nil
+        result["robots"].first["last_update"].should_not == "a long long time ago" # as save operation modifies last_update
+        result["robots"].last["last_update"].should_not be_nil
       end
     end
      
