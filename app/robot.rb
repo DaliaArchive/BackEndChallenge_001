@@ -2,6 +2,8 @@ require_relative '../lib/robot_store'
 require 'awesome_print'
 
 class Robot < Hash
+  NESTED_HISTORY_LOG = true
+  
   def initialize(attrs)
     @attrs = attrs
   end
@@ -72,7 +74,8 @@ class Robot < Hash
   
   def update_history
     update_scope = store.find_by_name(@attrs["name"])
-    change_log = format_deep_difference(difference(update_scope, @attrs))
+    dif = difference(update_scope, @attrs)
+    change_log = NESTED_HISTORY_LOG ? dif : format_deep_difference(dif)
     store.create_history(history_entry(change_log))
   end
 

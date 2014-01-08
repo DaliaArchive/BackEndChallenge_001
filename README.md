@@ -1,56 +1,134 @@
 # BackEnd Challenge 001
 ##notes from developer
 
-I assume that I can make suggestion related to information structures, as expalined in the task. 
-Therefore I introduced two improvements. 
+1. I assume that I can make suggestion related to information structures, as explained in the task. 
+Therefore I introduced a few improvements. 
 
-1. In history for particular robot I removed time as a key from hash representation. I assume that db will return items sorted. 
+Each response return status "ok" or "error" next to item, or collection of items requested in GET.
+
+B. In GET[index] - I removed iterator for collection. Each robot which calls such API can navigate trough arrays and does not need such support. 
+
+{
+  status: "ok"
+  robots: [3]
+    0:  {
+      name: "hal9000"
+      last_update: "2014-01-04 14:13:05 UTC"
+    }
+    1:  {
+      name: "r2d2"
+      last_update: "2014-01-04 18:59:34 UTC"
+    }
+    2:  {
+    name: "wall-e"
+    last_update: "2014-01-08 21:09:03 UTC"
+    }
+}
+
+2. Robot class is ActiveRecord like. 
+
+3. I used pure 'mongo' gem. Sure I could use MongoMapper or MongoID, but just to show that it's easy to use pure MongoDB in Sinatra. 
+
+4. In case of embedded attributes history shows change only to changed nested attributes thanks to #difference and #format_deep_difference methods. 
+
+POST /api_v1/robots/
+{"name" : "wall-e", "age" : {"year":"2", "month" : "Jan"},  "color" : "yellow", "height" : "50cm", "weight" : "30kg"}
+
+POST /api_v1/robots/
+{"name" : "wall-e", "age" : {"year":"3", "month" : "Jan"},  "color" : "dirty yellow", "height" : "50cm", "weight" : "30kg"}
+
+POST /api_v1/robots/
+{"name" : "wall-e", "age" : {"year":"3", "month" : "Jan"},  "color" : "dirty yellow", "height" : "49cm", "weight" : "30kg"}
+
+then 
+GET http://localhost:3000/api_v1/robots/wall-e
+
+```
+{
+  status: "ok"
+  robot: {
+    age: {
+      year: "3"
+      month: "Jan"
+    }
+    color: "dirty yellow"
+    height: "49cm"
+    last_update: "2014-01-08 20:56:12 UTC"
+    name: "wall-e"
+    weight: "30kg"
+  }
+}
+```
+And 
+GET http://localhost:3000/api_v1/robots/wall-e/history/
+```
+{
+  status: "ok"
+  history: [3]
+  0:  {
+    name: "wall-e"
+    type: "create"
+    time: "2014-01-08 20:55:11 UTC"
+    log: {
+      name: "[] -> [wall-e]"
+      age: "[] -> [{"year"=>"2", "month"=>"Jan"}]"
+      color: "[] -> [yellow]"
+      height: "[] -> [50cm]"
+      weight: "[] -> [30kg]"
+    }
+  }
+  1:  {
+    name: "wall-e"
+    type: "update"
+    time: "2014-01-08 20:56:01 UTC"
+    log: {
+      age: "{"year"=>"[2] -> [3]"}"
+      color: "[yellow] -> [dirty yellow]"
+    }
+  }
+  ...
+}
+```
+
+while with not using format_deep_difference this response element will look like below:
+```
+{
+  status: "ok"
+  history: [3]
+  0:  {
+    name: "wall-e2"
+    type: "create"
+    time: "2014-01-08 21:08:43 UTC"
+    log: {
+      name: "[] -> [wall-e2]"
+      age: "[] -> [{"year"=>"2", "month"=>"Jan"}]"
+      color: "[] -> [yellow]"
+      height: "[] -> [50cm]"
+      weight: "[] -> [30kg]"
+    }
+  }
+  1:  {
+    name: "wall-e2"
+    type: "update"
+    time: "2014-01-08 21:09:49 UTC"
+    log: {
+      age: {
+        year: "[2] -> [3]"
+      }
+    color: "[yellow] -> [dirty yellow]"
+  }
+}
+```
+
+To assume - changes in nested attributes may be stored in flatten or nested structure. 
+To toggle - change NESTED_HISTORY_LOG value in Robot class. 
 
 
-- - type: create
-  - time: 2112-11-28 10:23:24
-	- changes: 
-		- size: [] -> [100cm]
-		- weight: [] -> [10kg]
-		- status: [] -> [good conditions]
-		- color: [] -> [white]
-		- age: [] -> [123years]
+5. Application has a taste of safety thanks to Rack authentication abilities. However not authenticated users still can knock to '/' to say Hello to DaliaResearch. 
 
-- - type: update
-  - time: 2113-12-02 16:30:11
-	- changes:
-		- color: [white] -> [dirty white]
-		- age: [123years] -> [124years]
-		- number of eyes: [] -> [1]
-		- number of antennas: [] -> [2]
+6. This API was not proven in working environment. Therefore I suggested to call it 'api_v1'. This trick gives opportunity to think out better solution for next generation robodoctors in future while current one still can work on api_v1 version.   
 
-
-2. In index - I removed iterator. Each robot which calls such API can navigate trough arrays and does not need such support. 
-
--	- name: XX1
-	- last_update: 2113-12-01
-
--	- name: XX2
-	- last_update: 2113-12-03
-
-- - name: XX3
-	- last_update: 2113-12-12
-
-
-Robot class is ActiveRecord like. 
-
-In case of embedded attributes history shows change only to changed nested attributes thanks to #difference and #format_deep_difference methods. 
-
-I used pure 'mongo' gem. Shure I could use MongoMapper or MongoID, but just to show that it's easy to use pure MongoDB in Sinatra. 
-
-Now "name" key is used as primary key for all Robot class operation. However I keep "_id" which may be useful later. 
-
-
-Application has a taste of safety thanks to Rack authentication abilities. However not authenticated users still can knock to '/' to say Hello to DaliaResearch. 
-
-This API was not proven in working environment. Therefore I suggested to call it 'api_v1'. This trick gives opportunity to think out better solution for next generation robodoctors in future while current one still can work on api_v1 version.   
-
-
+## Have a good time using this API :) 
 
 
 
