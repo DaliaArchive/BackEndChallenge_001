@@ -8,12 +8,19 @@ class Api::V1::RobotsController < ApplicationController
   end
 
   def update
-    robot = Robot.where(params[:id]).first
-    robot.update_attributes(robot_params)
-    respond_with(robot)
+    if Robot.where(id: params[:id]).empty?
+      robot = Robot.create(robot_params)
+      respond_with(robot)
+    else
+      robot = Robot.find(params[:id])
+      robot.update_attributes(robot_params)
+      respond_with(robot)
+    end
   end
 
   def robot_params
-    params.require(:robot).permit(:size, :weight, :status, :color)
+    params.require(:robot).permit(:data).tap do |whitelisted| 
+      whitelisted[:data] = params[:robot][:data]
+    end
   end
 end

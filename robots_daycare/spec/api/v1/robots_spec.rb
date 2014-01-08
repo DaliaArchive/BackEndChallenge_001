@@ -23,32 +23,36 @@ describe "/api/v1/robots" do
     context "existing robot", :type => :api do
 
       before do
-        @robot = Fabricate(:robot, weight: 100, color: "black", status: "working")
+        @robot = Fabricate(:robot, data: { weight: 100, color: "black", status: "working" } )
       end
 
       it "updates existing attributes" do
-        patch "/api/v1/robots/#{@robot.id}", :robot => { weight: 200, color: "blue"}
+        patch "/api/v1/robots/#{@robot.id}", :robot => { data: { weight: 200, color: "blue" } }
 
         @robot.reload
-        @robot.weight.should eql(200)
+        @robot.data["weight"].to_i.should eql(200)
       end
 
       it "creates new attributes if they do not exist" do
-        patch "/api/v1/robots/#{@robot.id}", :robot => { weight: 200, color: "blue", material: "aluminum"}
+        patch "/api/v1/robots/#{@robot.id}", :robot => { data: {weight: 200, color: "blue", material: "aluminum" } }
 
         @robot.reload
-        @robot.material.should be_present
-        @robot.material.should eql("aluminum")
+        @robot.data["material"].should be_present
+        @robot.data["material"].should eql("aluminum")
       end
 
     end
 
     context "non-existing robot", :type => :api do
       it "creates a new robot" do
-        patch "/api/v1/robots/1" , :robot => { weight: 200, color: "blue"}
+        patch "/api/v1/robots/1" , :robot => { data: { weight: 200, color: "yellow"} }
 
         Robot.first.should be_present
+        Robot.first.data["color"].should eql("yellow")
       end
     end
+  end
+
+  context "history", :type => :api do
   end
 end
