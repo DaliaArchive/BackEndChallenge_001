@@ -5,6 +5,8 @@ How to use:
   - Run Mongo
   - bundle install
   - script/server
+  
+Credentials for authenticated part are "foo" and "bar" for user and password correspondingly.
 
 1. I assume that I can make suggestion related to information structures, as explained in the task. 
 Therefore I introduced a few improvements. 
