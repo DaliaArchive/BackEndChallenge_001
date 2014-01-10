@@ -49,10 +49,10 @@ The inspector asks for the robot XX1 and the system responses with the following
 
 {
 
-"id" : 1,
-"data" : {"color":"blue","weight":"200"},
-"created_at" : "2014-01-09T18:56:10.000Z",
-"updated_at" : "2014-01-10T04:46:57.000Z"
+- "id" : 1,
+- "data" : {"color":"blue","weight":"200"},
+- "created_at" : "2014-01-09T18:56:10.000Z",
+- "updated_at" : "2014-01-10T04:46:57.000Z"
 
 }
 
@@ -60,9 +60,9 @@ The inspector asks for the robot XX1 and the system responses with the following
 
 To have an overview of all the robot's in our database, make the following request:
 
-  url: http://localhost:3000/api/v1/robots/
-  method: GET
-  Body : N/A
+- url: http://localhost:3000/api/v1/robots/
+- method: GET
+- Body : N/A
 
 [History] get a robot's attributes changes
 
