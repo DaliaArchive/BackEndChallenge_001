@@ -51,6 +51,9 @@ GEM
     mime-types (1.25.1)
     minitest (4.7.5)
     multi_json (1.8.2)
+    paper_trail (3.0.0)
+      activerecord (>= 3.0, < 5.0)
+      activesupport (>= 3.0, < 5.0)
     pg (0.17.1)
     polyglot (0.3.3)
     pry (0.9.12.4)
@@ -86,6 +89,8 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+    shoulda-matchers (2.4.0)
+      activesupport (>= 3.0.0)
     slop (3.4.7)
     sprockets (2.10.1)
       hike (~> 1.2)
@@ -111,9 +116,11 @@ PLATFORMS
 DEPENDENCIES
   database_cleaner
   fabrication
+  paper_trail (~> 3.0.0)
   pg
   pry
   rack-test
   rails (= 4.0.0)
   rails-api!
   rspec-rails
+  shoulda-matchers

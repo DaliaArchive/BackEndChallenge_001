@@ -1,6 +1,11 @@
 class Api::V1::RobotsController < ApplicationController
   respond_to :json
 
+  def index
+    robots = Robot.all
+    respond_with(robots)
+  end
+
 
   def show
     robot = Robot.find(params[:id])
@@ -17,6 +22,14 @@ class Api::V1::RobotsController < ApplicationController
       respond_with(robot)
     end
   end
+
+  def history
+    robot = Robot.find(params[:robot_id])
+    binding.pry
+    respond_with(robot.versions)
+  end
+
+  private
 
   def robot_params
     params.require(:robot).permit(:data).tap do |whitelisted| 

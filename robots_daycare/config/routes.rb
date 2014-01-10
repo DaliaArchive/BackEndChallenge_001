@@ -2,7 +2,9 @@ RobotsDaycare::Application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      resources :robots, only: [ :show, :update ]
+      resources :robots, only: [ :index, :show, :update ] do
+        get 'history', to: 'robots#history'
+      end
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

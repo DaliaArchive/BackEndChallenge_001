@@ -5,6 +5,7 @@ gem 'rails', '4.0.0'
 gem 'rails-api', git: 'https://github.com/rails-api/rails-api.git', branch: 'master'
 gem 'pg'
 gem 'fabrication'
+gem 'paper_trail', '~> 3.0.0'
 
 group :test, :development do
   gem 'rspec-rails'
@@ -12,6 +13,7 @@ group :test, :development do
 end
 
 group :test do
+  gem 'shoulda-matchers'
   gem 'rack-test'
   gem 'database_cleaner'
 end

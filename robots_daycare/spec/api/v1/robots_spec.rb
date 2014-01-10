@@ -18,23 +18,23 @@ describe "/api/v1/robots" do
     end
   end
 
-  context "update", :type => :api do
+  context "update", :type => :api, :versioning => true do
 
     context "existing robot", :type => :api do
 
       before do
-        @robot = Fabricate(:robot, data: { weight: 100, color: "black", status: "working" } )
+        @robot = Robot.create(data: { :weight => 100, :color => "black", :status => "working" })
       end
 
       it "updates existing attributes" do
-        patch "/api/v1/robots/#{@robot.id}", :robot => { data: { weight: 200, color: "blue" } }
+        patch "/api/v1/robots/#{@robot.id}", :robot => { data: { :weight => 200, :color => "blue" } }
 
         @robot.reload
         @robot.data["weight"].to_i.should eql(200)
       end
 
       it "creates new attributes if they do not exist" do
-        patch "/api/v1/robots/#{@robot.id}", :robot => { data: {weight: 200, color: "blue", material: "aluminum" } }
+        patch "/api/v1/robots/#{@robot.id}", :robot => { data: { :weight => 200, :color => "blue", :material => "aluminum" } }
 
         @robot.reload
         @robot.data["material"].should be_present
@@ -53,6 +53,26 @@ describe "/api/v1/robots" do
     end
   end
 
-  context "history", :type => :api do
+  context "index", :type => :api do
+    before do
+      @robot_1 = Fabricate(:robot, data: { :weight => 100, :color => "black", :status => "working" } )
+      @robot_2 = Fabricate(:robot, data: { :weight => 200, :color => "yellow", :status => "working" } )
+    end
+
+    it "returns all robots" do
+      get "/api/v1/robots"
+      Robot.all.should eq([@robot_1, @robot_2])
+    end
+  end
+
+  context "history", :type => :api, :versioning => true do
+    it "returns the attribute changes for a robot" do
+      @robot = Robot.create(data: { :weight => 100, :color => "black", :status => "working" })
+      @robot.update_attributes(data:{"color" => "yellow"})
+
+      get "/api/v1/robots/#{@robot.id}/history"
+      @json_response = JSON.parse(last_response.body)
+      @json_response[0]["item_id"].should eq(@robot.id)
+    end
   end
 end
