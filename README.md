@@ -25,9 +25,9 @@ Robots are configured to store attributes within an hstore data attribute. A sam
 
 To update a robot, make the following request:
 
-  -url: http://localhost:3000/api/v1/robots/:id
-  -Method: PATCH
-  -Body : 
+  - url: http://localhost:3000/api/v1/robots/:id
+  - Method: PATCH
+  - Body : 
 
   {
 
