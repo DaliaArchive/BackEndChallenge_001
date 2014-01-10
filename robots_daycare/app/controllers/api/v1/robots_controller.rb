@@ -25,7 +25,6 @@ class Api::V1::RobotsController < ApplicationController
 
   def history
     robot = Robot.find(params[:robot_id])
-    binding.pry
     respond_with(robot.versions)
   end
 
