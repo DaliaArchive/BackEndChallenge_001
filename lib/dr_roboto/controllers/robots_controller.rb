@@ -1,0 +1,52 @@
+require 'dr_roboto/controllers/base_controller'
+
+module DrRoboto
+  class RobotsController < BaseController
+
+    helpers AuthHelper
+
+    before do
+      authenticate!
+    end
+
+    get '/robots' do
+      robots = Robot.order('updated_at DESC')
+      { data: robots }.to_json
+    end
+
+    post '/robots' do
+      raise ParamsMissing unless params[:name].present?
+      robot = Robot.where(name: params[:name]).first_or_create!
+      RobotAttribute.transaction do
+        filter_reject(params, :name).each do |name, value|
+          RobotAttribute.where(robot: robot, name: name).first_or_initialize.tap do |a|
+            a.value = value
+            a.save!
+          end
+        end
+      end
+      status 201
+      { data: "success" }.to_json
+    end
+
+    get '/robots/:name' do
+      raise ParamsMissing unless params[:name].present?
+      robot = Robot.includes(:robot_attributes).find_by!(name: params[:name])
+      data = (robot.robot_attributes || []).inject({ name: robot.name }) do |acc, attr| 
+        acc.merge(attr.to_hash)
+      end
+      status 200
+      { data: data }.to_json
+    end
+
+    get '/robots/:name/history' do
+      raise ParamsMissing unless params[:name].present?
+      robot = Robot.includes(:robot_attributes).find_by!(name: params[:name])
+      history = {}
+      robot.robot_attributes.each{ |a| history[a.name] = a.history }
+      status 200
+      { data: history }.to_json
+    end
+    
+  end
+end
