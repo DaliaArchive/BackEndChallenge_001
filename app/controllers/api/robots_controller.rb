@@ -61,7 +61,7 @@ class Api::RobotsController < ApplicationController
 
     end
 
-    Fetch the query string parameters
+    # Fetch the query string parameters
     params.except(:action, :controller, :format, :id).each do |key, value|
 
       #add the parameters as new feature associated to the current revision

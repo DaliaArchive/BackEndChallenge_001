@@ -28,10 +28,16 @@ class Robot < ActiveRecord::Base
     features = self.features.group(:name).select(:name,:value).as_json
 
     # Format the output
-    features.map do |feature|
-      {
-        feature["name"] => feature["value"]
-      }
+    features.inject({}) do |hash, feature|
+
+      name = feature["name"]
+
+      value = feature["value"]
+
+      hash[name] = value
+
+      hash
+
     end
 
   end
@@ -92,14 +98,14 @@ class Robot < ActiveRecord::Base
             changes = "#{name}: [#{previous_features[name]}] -> [#{value}]"
 
           # Feature was not present in the previous revision
-          elsif !previous_features. has_key?(name)
+          elsif !previous_features.has_key?(name)
             # set up the changes string with an empty starting value
             changes = "#{name}: [] -> [#{value}]"
 
           end
 
           # insert the changes in the revision item
-          revision_item[created_at][:changes] << changes
+          revision_item[created_at][:changes] << changes if changes
 
         end
 
