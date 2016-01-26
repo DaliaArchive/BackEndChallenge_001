@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126083020) do
+ActiveRecord::Schema.define(version: 20160126083245) do
+
+  create_table "revisions", force: :cascade do |t|
+    t.string   "type"
+    t.integer  "robot_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "revisions", ["robot_id"], name: "index_revisions_on_robot_id"
 
   create_table "robots", force: :cascade do |t|
     t.string   "name"
