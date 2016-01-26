@@ -4,7 +4,7 @@
 
 Update a robot's parameters, if the robot doesn't exit create a new one with the given parameters
 
-PUT /api/robots/[robot name]?[attribute]=[value]
+`PUT /api/robots/[robot name]?[attribute]=[value]`
 
 ###Example:
 
@@ -33,7 +33,7 @@ Update the color parameter for the existing robot
 
 #Get a robot's actual attributes
 
-##Get all current attributes for a given robot's name in Json format
+Get all current attributes for a given robot's name in Json format
 
 `GET /api/robots/[robot name]`
 
@@ -49,9 +49,9 @@ Return -->
     "color": "red"
 }
 ```
-#get a list of all the robot's in our database
+#Get a list of all the robot's in our database
 
-##Return a list of all the robots in the database with the last revision
+Return a list of all the robots in the database with the last revision
 
 `GET /api/robots`
 
@@ -73,9 +73,9 @@ Return -->
 ]
 ```
 
-#get a robot's attributes changes
+Get a robot's attributes changes
 
-##Return a list of the robot attribute's changes over time
+Return a list of the robot attribute's changes over time
 
 `GET /api/robots/[robot name]/history`
 
