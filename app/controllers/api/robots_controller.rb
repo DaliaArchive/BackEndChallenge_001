@@ -3,6 +3,21 @@ class Api::RobotsController < ApplicationController
   protect_from_forgery
   skip_before_action :verify_authenticity_token, if: :json_request?
 
+
+  def index
+
+    @robots = Robot.all
+
+    respond_to do |format|
+
+      format.json { render :json => @robots.list }
+
+    end
+
+  end
+
+
+
   def show
 
     @robot = Robot.includes(:features).find_by_name(params[:id])
