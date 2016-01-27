@@ -1,5 +1,41 @@
 #Robot daycare APIs:
 
+##Notes
+
+For the purpose of the exercise I used a rails 4 application with the default test database sqlite.
+
+The application consists of a controller ( /controllers/api/robot_controller.rb) and three models : Robot, Revision, and Feature.
+
+Robot  model has a one to many relationship with Revision and Revision has a one to many relationship with Feature.
+
+Robot and Revision models have also convenience methods that are used to format the Json output of the API
+
+The Revision model keeps track of the date of an update and the type of the update("create" or "update") and provide a gateway to access to all the features introduced with that update.
+
+The Feature model represent every single feature that is submitted for a Robot and consist of a name-value pairs of attributes.
+
+Every time  an update request for a Robot is issued, the application create a Revision entry. Then it creates a new Feature entry for every submitted parameter, and associate those features with the current revision. In this way is possible to keep track of every change in the existing features without overriding the values.
+
+The application is configured to accept only Json requests and responds in Json format.
+
+I decided to use RSpec as test suite and the specific tests for the APIs can be found inside
+/spec/requests/api/robots_spec.rb
+
+
+# How to run
+
+### Run the application
+
+* bundle install
+* bundle exec rails s
+
+### Run the tests
+
+* bundle exec rspec (to run all the specs)
+
+
+#Usage
+
 ##Update a robot's attributes
 
 Update a robot's parameters, if the robot doesn't exit create a new one with the given parameters
@@ -73,13 +109,13 @@ Return -->
 ]
 ```
 
-Get a robot's attributes changes
+#Get a robot's attributes changes
 
 Return a list of the robot attribute's changes over time
 
 `GET /api/robots/[robot name]/history`
 
-Example:
+###Example:
 ```
 GET /api/robots/[robot name]/history
 

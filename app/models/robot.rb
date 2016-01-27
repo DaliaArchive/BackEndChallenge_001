@@ -3,13 +3,13 @@ class Robot < ActiveRecord::Base
   has_many :revisions
   has_many :features, through: :revisions
 
-  # return a formatted list of all the robots with the last update
+  # returns a formatted list of all the robots with the last update
   def self.list
 
     # Fetch the robots
     robots = Robot.includes(:revisions).all
 
-    # Format the output
+    # Formats the output
     robots.map do |robot|
 
       last_update = robot.revisions.last.created_at.to_formatted_s(:db)
@@ -21,13 +21,13 @@ class Robot < ActiveRecord::Base
   end
 
 
-  # Return a formatted list of the robot current features
-  def current_revision
+  # Return a formatted hash of the robot's current features
+  def current_features
 
-    # Fetch the robots current features with unique names
+    # Fetch the robot's current features with unique names
     features = self.features.group(:name).select(:name,:value).as_json
 
-    # Format the output
+    # Formats the output
     features.inject({}) do |hash, feature|
 
       name = feature["name"]
@@ -42,80 +42,84 @@ class Robot < ActiveRecord::Base
 
   end
 
-  # Return a dettailed list of all revisions and changes for a robot
+  # Returns a dettailed list of all revisions and changes for a robot
   def history
 
     # Fetch the revisions
     revisions = self.revisions.includes(:features).all
 
-    # Instantiate an empty container for the list
-    history = []
+    # Instantiates an empty container for the list that will be returned by the method
+    revisions_history = {}
+    # Instantiates an empty container that keep track of the changing features over time
+    registry = {}
+    # Iterates over the revisions
+    revisions.each do |actual|
 
-    # Iterate over the features with index in order to grab the previous
-    # element and confront the changes
-    revisions.each_with_index do |actual, i|
-
-      # current features
+      # Fetches the features present in the current revision
       actual_features = actual.get_features
 
-      # Set up the item hash for the current revision
+      # Sets up the item hash for the current revision
       created_at = actual.created_at.to_formatted_s(:db)
 
-      revision_item = {
-        created_at => {
+      revision_item =  {
           type: actual.type,
           changes: []
 
         }
-      }
 
-      #if it's the first revision
+
+      #if it's the first revision for a robot
       if actual.type === "create"
 
-        # set up the changes string with an empty starting value
+        # updates the value in the changes history hash and
+        # sets up the change string with an empty starting value
+
         changes = actual_features.map do |name, value|
+
+          registry[name] = value
 
           "#{name}: [] -> [#{value}]"
 
         end
 
-        revision_item[created_at][:changes] = changes
+        # puts the changes string in the current revision item
+        revision_item[:changes] = changes
 
+      # if it's an update revision
       else
 
-        # Fetch the previous revision
-        previous = revisions[i - 1]
 
-        previous_features = previous.get_features
 
-        # Iterate over the features of the current revision to confront them
-        # with the previous revision
+        # Iterates over the features of the current revision to confront them
+        # with the history of features
         actual_features.each do |name, value|
 
-          # Feature was already present but the value has changed
-          if previous_features.has_key?(name) && previous_features[name] != value
-            # set up the changes string with the old and new values
-            changes = "#{name}: [#{previous_features[name]}] -> [#{value}]"
-
-          # Feature was not present in the previous revision
-          elsif !previous_features.has_key?(name)
-            # set up the changes string with an empty starting value
+          # Feature was already present in the registry but the value has changed
+          if registry.has_key?(name) && registry[name] != value
+            # sets up the changes string with the old and new values
+            changes = "#{name}: [#{registry[name]}] -> [#{value}]"
+            # updates the registry
+            registry[name] = value
+          # if feature is not present in the registry
+          elsif !registry.has_key?(name)
+            # sets up the changes string with an empty starting value
             changes = "#{name}: [] -> [#{value}]"
-
+            # updates the registry
+            registry[name] = value
           end
 
           # insert the changes in the revision item
-          revision_item[created_at][:changes] << changes if changes
+          revision_item[:changes] << changes if changes
 
         end
 
       end
-      #insert the item in the list
-      history << revision_item
+      #insert the revision item in the list
+      revisions_history[created_at] = revision_item
 
     end
 
-    history
+    revisions_history
 
   end
 
