@@ -147,7 +147,7 @@ Must be Ruby... frameworks, gems, databases are all up to you.
 1. Complete the task and push on your own fork. (Nice, atomic and iterative commits are welcome)
 1. Include instructions of how we can make it to work
 1. Submit a pull request
-1. Send an email to hr@daliaresearch.com to review your solution
+1. Send an email to hr@daliaresearch.com for us to review your solution
 
 And of course: don't hesitate to **contact us with any question** you have, better use for this our _IT_ email: [it@daliaresearch.com](mailto:it@daliaresearch.com)
 
