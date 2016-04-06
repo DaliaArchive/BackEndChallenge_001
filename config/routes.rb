@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :robots, only: [:index, :show, :maintain] do
+  resources :robots, only: [:index, :show] do
     member do
       get 'maintenance_records'
     end
