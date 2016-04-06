@@ -8,6 +8,8 @@ class MaintenanceRecord < ActiveRecord::Base
     Feature.diffs(previous.try(:features), self.features)
   end
 
+  # Merge previous and new features and save them
+  #
   def save_features
     if previous.present?
       merged = previous.features_hash.merge(self.features_hash)
@@ -28,6 +30,7 @@ class MaintenanceRecord < ActiveRecord::Base
 
   private
 
+  # Previous maintenance_record of this instance
   def previous
     if robot.persisted? && robot.maintenance_records.present?
       robot.

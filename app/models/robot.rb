@@ -9,6 +9,10 @@ class Robot < ActiveRecord::Base
     current_maintenance_record.try(:features)
   end
 
+  # Create maintenance_record and its features
+  #
+  # == Parameters:
+  #   [Feature.new(key: 'foo', value: 'var')]
   def maintain(features)
     maintenance_records.build(features: features).tap {|maintenance_record|
       self.current_maintenance_record = maintenance_record
