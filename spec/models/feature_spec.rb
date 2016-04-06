@@ -20,9 +20,7 @@ describe Feature, type: :model do
 
         subject { Feature.diffs([feature_a], [feature_b]) }
 
-        it "returns values of A and B for the key" do
-          is_expected.to be_empty
-        end
+        it { is_expected.to be_empty }
       end
     end
 
@@ -32,7 +30,7 @@ describe Feature, type: :model do
 
       subject { Feature.diffs([feature_a], [feature_b]) }
 
-      it "returns values of A and B for the key" do
+      it "returns values of B for the key" do
         is_expected.to eq('b' => [Feature::NIL_FEATURE, feature_b])
       end
     end
