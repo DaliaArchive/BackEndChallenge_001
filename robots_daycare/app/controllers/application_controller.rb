@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def processing_error
-    { error: "Error ocurred while processing record" }
+    { error: "Error occurred while processing record" }
   end
 
 end
