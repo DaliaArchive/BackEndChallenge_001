@@ -55,7 +55,7 @@ https://docs.mongodb.org/manual/installation/
 
 **Sample Error Output** : { "error": "Error occurred while processing record" }
 
-**Curl command**  : curl -X PATCH --data "attribs={\"size\":\"1000cm\", \"weight\":\"111kg\", \"color\":\"blackkkkkkkskss\"}" http://localhost:3000/robots/XX8
+**Curl command**  : curl -X PATCH -H "Content-Type: application/json" --data '{"attribs":{"size":"1000cm", "weight":"111kg", "color":"blackkkkkkkskss"}}' http://localhost:3000/robots/XX8
 
 
 

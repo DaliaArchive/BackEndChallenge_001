@@ -7,6 +7,7 @@ class Robot
   field :attribs, type: Hash, :default => Hash.new
   
   validates_presence_of :name
+  validates_uniqueness_of :name
 
   def self.action_type(attibs)
     attibs.blank? ? "create" : "update"

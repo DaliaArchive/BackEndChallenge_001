@@ -20,7 +20,7 @@ class RobotsController < ApplicationController
   def update
     begin
       old_attribs = @robot.attribs
-      @robot.attribs = @robot.attribs.merge(JSON.parse(params[:attribs]))
+      @robot.attribs = @robot.attribs.merge(params[:attribs])
       respond_to do |format|
         if @robot.save
           @robot.save_history(old_attribs)

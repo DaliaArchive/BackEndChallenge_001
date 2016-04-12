@@ -9,7 +9,7 @@ class HistoriesController < ApplicationController
         if @robot
           format.json { render json: @robot.histories.to_json(:except => :_id) }
         else
-          format.json { render json: @robot.errors, status: :unprocessable_entity }
+          format.json { render json: {error: "No robot record found by given name"} }
         end
       end
     rescue
