@@ -1,0 +1,17 @@
+development:
+  clients:
+    default:
+      database: backend_challenge_development
+      hosts:
+        - db
+
+test:
+  clients:
+    default:
+      database: backend_challenge_test
+      hosts:
+        - db
+      options:
+        read:
+          mode: :primary
+        max_pool_size: 1
