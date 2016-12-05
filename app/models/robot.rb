@@ -2,7 +2,6 @@ class Robot
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
 
-
   validates :name, uniqueness: true
 
   field :name, type: String
@@ -13,5 +12,9 @@ class Robot
         write_attribute(key, value)
       end
     end
+  end
+
+  def id
+    self._id.to_s
   end
 end
