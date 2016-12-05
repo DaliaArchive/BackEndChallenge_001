@@ -3,7 +3,7 @@ class RobotsController < ApplicationController
   def index
     @robots = Robot.all
 
-    render json: @robots.as_json(only: [:name], methods: [:id])
+    render json: @robots.as_json(only: [:name, :last_update], methods: [:id])
   end
 
   def show

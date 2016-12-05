@@ -13,6 +13,7 @@ RSpec.describe RobotsController, type: :controller do
       expect(body.size).to eq(1)
       expect(body[0]).to include('name')
       expect(body[0]).to include('id')
+      expect(body[0]).to include('last_update')
     end
   end
 

@@ -11,4 +11,14 @@ RSpec.describe Robot, type: :model do
       expect(robot['color']).to eq('white')
     end
   end
+
+  describe '.set_last_update' do
+    it 'should set last_update attribute to current time when record is saved' do
+      expect(robot.last_update).to be_present
+
+      sleep 1.second
+
+      expect { robot.update(age: '124 years') }.to change(robot, :last_update)
+    end
+  end
 end
