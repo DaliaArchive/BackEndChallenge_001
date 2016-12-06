@@ -8,4 +8,8 @@ class History
 
   embedded_in :robot
   embeds_many :attribute_changes
+
+  def as_json(options)
+    { created_at.strftime("%Y-%m-%d %H:%M:%S") => { type: type, changes: attribute_changes } }
+  end
 end
