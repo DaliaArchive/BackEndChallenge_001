@@ -1,154 +1,110 @@
 # BackEnd Challenge 001
 
-For us, it is not all about the CV or titles. The most important for us is to know how you face a concrete challenge and how you approach it. What is your way of thinking, how do you tackle the problem, which tools do you choose, ...
+## 1. Dependencies
+The application runs on:
+- Ruby 2.3.x
+- RubyGems
+- Bundler gem
+- Ruby on Rails 5
+- MongoDB
+- Mongoid 6
 
-In order to understand all this, we would like you to complete the following challenge. This is a simplified case which illustrates the kinds of situations we have to deal with on a daily basis.
+## 2. Running the application
 
-This is a good opportunity to demonstrate your style and your capabilities. It is a way to show us which kind of code you like to create.
+### 2.1 With Docker
+The application is configured to run with Docker.
+You need to have both Docker Engine and Docker Compose installed.
+Then build the application container and run it.
 
-There are no time limitations but we suggest you don't spend more than a few hours on it. We are not looking for a bullet-proof solution but it has to be an elegant, clean, maintainable and intuitive approach.
+#### 2.1.1 Build the application container
+From the root path of the application, run:
+```
+docker-compose build
+```
 
-Create it in your own way and use the tools you are most comfortable with. Show us your skills.
+Wait for the build to be finished.
 
-## Challenge Description
+#### 2.1.2 Create data
+To create the databases and seed them, from the root path of the application, run:
+```
+docker-compose run web rake db:create
+docker-compose run web rake db:seed
+```
 
-### The robots' daycare center
+#### 2.1.3 Start the application
+From the root path of the application, run:
+```
+docker-compose up
+```
 
-Citizens are getting more and more used to having robots around on a day to day basis. They build very strong relationship with them, however robots are also getting old and start to malfunction at one point. When this time comes, they are not self-sufficient anymore and you have to choose between "terminating" them or taking care of them until their vital functions stop working indefinitely.
+The application is up and running.
+To access the application, go to `http://localhost:3000` on your web browser.
 
-Taking care of a malfunction robot is a time-consuming task and in our busy society not every person has the time to do so. Thats why we are building the _Robot's daycare center_.
+### 2.2 Manually
+You must have the following dependencies installed:
+- Ruby 2.3.x
+- RubyGems
+- Bundler gem
+- MongoDB
 
-The robot's daycare centers are subsidised by the government and in order for them to benefit from this program, they need to give government inspectors access to their database of _guests_.
+#### 2.2.1 Configure database credentials
+Conigure credentials for database access on `config/mongoid.yml` file.
 
+#### 2.2.2 Install all gems
+From the root path of the application, run:
+```
+bundle install
+```
 
-### The inspectors API
+#### 2.2.3 Create data
+To create the databases and seed them, from the root path of the application, run:
+```
+bundle exec rake db:create
+bundle exec rake db:seed
+```
 
-The inspectors come to our center and check our _guests_ one by one and update the database.
+#### 2.1.3 Start the application
+From the root path of the application, run:
+```
+bundle exec rails s
+```
 
-As the inspectors are robots their selves, they don't use a web browser to communicate with our system, but a very simple API that we have to implement for them.
+The application is up and running.
+To access the application, go to `http://localhost:3000` on your web browser.
 
-The API has 4 methods:
+## 3. API routes
 
-#### _[Update]_ update a robot's attributes
+### 3.1 Robots List
+##### URI
+```
+GET /robots
+```
 
-1. The inspector sends the attributes for a specific robot.
-2. Our system detects if the robot is already in our database or not. If not, we create it and if yes, we go directly to the next step.
-3. We update the robot's attributes, only changing the ones included in the actual update request.
+### 3.2 Robot Attributes
+##### URI
+```
+GET /robots/:id
+```
 
-##### Example
+### 3.3 Update Robot Attributes
+##### URI
+```
+PUT/PATCH /robots/:id
+```
+##### Payload
+```
+{
+  robot: {
+    attributes: {
+      <attribute_name:String>: <attribute_value:String>,
+      <attribute_name:String>: <attribute_value:String>,
+      ...
+    }
+  }
+}
+```
 
-The robot _XX1_ is already in our system and has the following attributes: 
-
-- size: 100cm
-- weight: 10kg 
-- status: good conditions
-- color: white
-- age: 123years
-
-The inspector checks the robot and decides to update his attributes and sends the following information:
-
-- color: dirty white
-- age: 124years
-- number of eyes: 1
-- number of antenna: 2
-
-The robot _XX1_ now has these attributes: 
-
-- size: 100cm
-- weight: 10kg 
-- status: good conditions
-- color: dirty white
-- age: 124years
-- number of eyes: 1
-- number of antennas: 2
-
-Be aware that the attributes are not predefined and can be anything on both sides: key and value.
-
-#### _[Show]_ get a robot's actual attributes
-
-The inspector wants to know about the actual attributes of a robot
-
-##### Example
-
-The inspector asks for the robot _XX1_ and the system responses with the following information:
-
-- size: 100cm
-- weight: 10kg 
-- status: good conditions
-- color: dirty white
-- age: 124years
-- number of eyes: 1
-- number of antennas: 2
-
-#### _[Index]_ get a list of all the robot's in our database
-
-The inspector wants to have an overview of all the robot's in our database.
-
-##### Example
-
-The inspector makes the call and the system responses with the following information:
-
-- 1
-	- name: XX1
-	- last_update: 2113-12-01
-
-- 2
-	- name: XX2
-	- last_update: 2113-12-03
-
-- 3
-	- name: XX3
-	- last_update: 2113-12-12
-	
-#### _[History]_ get a robot's attributes changes
-
-The inspector is interested in knowing about the evolution of the robot, so he asks for the changes on the attributes that have been done for this specific robot.
-
-##### Example:
-
-The inspector asks for the history of the robot _XX1_, the system responses with the following information:
-
-- 2112-11-28 10:23:24
-	- type: create
-	- changes: 
-		- size: [] -> [100cm]
-		- weight: [] -> [10kg]
-		- status: [] -> [good conditions]
-		- color: [] -> [white]
-		- age: [] -> [123years]
-
-- 2113-12-02 16:30:11
-	- type: update
-	- changes:
-		- color: [white] -> [dirty white]
-		- age: [123years] -> [124years]
-		- number of eyes: [] -> [1]
-		- number of antennas: [] -> [2]
-
-
-### The API details
-
-You can make your own decision on the details of your API. You can define the URLs, request methods, headers, response types, response formats, etc.
-
-You don't even have to follow the information structures showed in the examples above. Use whatever structure you think is best, however just make sure that your proposition includes all the information in the examples.
-
-### Programming Requirements
-
-Must be Ruby... frameworks, gems, databases are all up to you.
-
-### What we assess
-
-- Legible, understandable and maintainable code
-- Wisely choosen tools, techniques and/or frameworks
-
-## Submission Instructions
-
-1. Fork this project
-1. Complete the task and push on your own fork. (Nice, atomic and iterative commits are welcome)
-1. Include instructions of how we can make it to work
-1. Submit a pull request
-1. Send an email to hr@daliaresearch.com for us to review your solution
-
-And of course: don't hesitate to **contact us with any question** you have, better use for this our _IT_ email: [it@daliaresearch.com](mailto:it@daliaresearch.com)
-
-
+### 3.4 Robots History
+```
+GET /robots/:id/histories
+```
