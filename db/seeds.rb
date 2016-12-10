@@ -5,3 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+robot = Robot.create(name: 'XX1', attributes: { size: '100cm', weight: '10kg', status: 'good conditions', color: 'white', age: '123years' })
+robot.update(attributes: { age: '124 years', color: 'dirty white', number_of_eyes: 1, number_of_antennas: 2 })
