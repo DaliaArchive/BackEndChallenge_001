@@ -1,3 +1,41 @@
+##Example:
+
+https://robots-daycare.herokuapp.com/robots
+
+##Routes:
+
+```bash
+
+:: GET ::
+A/robots/:name/history\
+A/robots/:name\
+A/robots/XX:id/history\
+A/robots/XX:id\
+A/robots\
+
+:: HEAD ::
+A/robots/:name/history\
+A/robots/:name\
+A/robots/XX:id/history\
+A/robots/XX:id\
+A/robots\
+
+:: POST ::
+A/robots\
+
+:: PUT ::
+A/robots/:name\
+A/robots/XX:id\
+
+:: PATCH ::
+A/robots/:name\
+A/robots/XX:id\
+
+:: DELETE ::
+A/robots/:name\
+A/robots/XX:id\
+
+```
 # BackEnd Challenge 001
 
 For us, it is not all about the CV or titles. The most important for us is to know how you face a concrete challenge and how you approach it. What is your way of thinking, how do you tackle the problem, which tools do you choose, ...
