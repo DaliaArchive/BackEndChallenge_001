@@ -59,7 +59,7 @@ The action of replacing the robot info with another is done directly and explici
 
 #### Example:
 
-https://robots-daycare.herokuapp.com/robots (if you get forbidden, it's something with the headers and heroku, just copy and paste to the browser)
+https://robots-daycare.herokuapp.com/robots (if you get forbidden, it's something with the headers - probably the referrer - and heroku, just copy and paste the link to the browser)
 
 
 **_Create_**
