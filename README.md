@@ -33,13 +33,9 @@ The action of replacing the robot info with another is done in the helper and is
 
 ```
 
-rubysherpas/paranoia: for revisions 
-cerebris/jsonapi-resources and .
-parano
-
 #### Example:
 
-https://robots-daycare.herokuapp.com/robots
+https://robots-daycare.herokuapp.com/robots (if you get forbidden, it's something with the headers and heroku, just copy and paste to the browser)
 
 #### Routes (rake routes):
 
