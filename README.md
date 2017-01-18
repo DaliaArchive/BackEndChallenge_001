@@ -89,6 +89,9 @@ curl -H "Content-Type: application/json" -X PATCH -d '{}' https://robots-daycare
 {"status":"success","id":3}
 ```
 **_History_ (only one udpate, because on the second update there were no changes to the robot)**
+```bash
+curl https://robots-daycare.herokuapp.com/robots/XX3/history
+```
 ```json
 [{
 	"changes": {
