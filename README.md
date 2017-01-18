@@ -38,7 +38,7 @@ The action of replacing the robot info with another is done directly and explici
 https://robots-daycare.herokuapp.com/robots (if you get forbidden, it's something with the headers and heroku, just copy and paste to the browser)
 
 
-_Create_
+**_Create_**
 ```bash
 curl -H "Content-Type: application/json" -X POST -d '{"I AM":"robot","this attribute will be nulled": "not null"}' https://robots-daycare.herokuapp.com/robots
 ```
@@ -46,7 +46,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"I AM":"robot","this attri
 {"status":"success","id":3}
 ```
 
-_Show_
+**_Show_**
 ```bash
 curl https://robots-daycare.herokuapp.com/robots/XX3
 ```
@@ -54,7 +54,7 @@ curl https://robots-daycare.herokuapp.com/robots/XX3
 {"I AM":"robot","this attribute will be nulled":"not null"}
 ```
 
-_Index_
+**_Index_**
 ```bash
 curl https://robots-daycare.herokuapp.com/robots
 ```
@@ -71,16 +71,7 @@ curl https://robots-daycare.herokuapp.com/robots
 }]
 ```
 
-_Update_
-```bash
-curl -H "Content-Type: application/json" -X PUT -d '{"I AM":"robot","this attribute will be nulled": null}' https://robots-daycare.herokuapp.com/robots/XX3
-```
-
-```json
-{"status":"success","id":3}
-```
-
-_Update (PUT)_
+**_Update (PUT)_**
 ```bash
 curl -H "Content-Type: application/json" -X PUT -d '{"I AM":"robot","this attribute will be nulled": null}' https://robots-daycare.herokuapp.com/robots/XX3
 ```
@@ -88,14 +79,14 @@ curl -H "Content-Type: application/json" -X PUT -d '{"I AM":"robot","this attrib
 {"status":"success","id":3}
 ```
 
-_Update (PATCH)_ (nothing is changed here)
+**_Update (PATCH)_ (nothing is changed here)**
 ```bash
 curl -H "Content-Type: application/json" -X PATCH -d '{}' https://robots-daycare.herokuapp.com/robots/XX3
 ```
 ```json
 {"status":"success","id":3}
 ```
-_History_ (only one udpate, even though we updated the entry twice)
+**_History_ (only one udpate, even though we updated the entry twice)**
 ```json
 [{
 	"changes": {
@@ -111,13 +102,15 @@ _History_ (only one udpate, even though we updated the entry twice)
 }]
 ```
 
-_Delete_
+**_Delete_**
 ```bash
 curl -X DELETE https://robots-daycare.herokuapp.com/robots/XX1
 ```
 ```json
 {"status":"success"}
 ```
+
+
 #### Routes (rake routes):
 
 ```bash
