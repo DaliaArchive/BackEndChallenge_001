@@ -19,7 +19,8 @@ module RobotsHelper
     unless robot.errors.blank?
       halt 422, json(status: 'error', message: robot.errors.to_json)
     end
-    halt json(status: 'success', id: robot.id)
+    headers['Location'] = "./robots/XX#{robot.id}"
+    halt 201, json(status: 'success', id: robot.id)
   end
 
   # The requirements present a behavior limitation that once an attribute is
