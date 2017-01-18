@@ -21,10 +21,12 @@ The action of replacing the robot info with another is done in the helper and is
 
 ```bash
 
-|---------------|    has_one	|-----------------------|
-|     Robot     |-------------->|       RobotInfo       |
+                                |-----------------------|
+                                |       RobotInfo       |
 |---------------|               |-----------------------|
-                                |      info (json)      |
+|     Robot     |-------------->|      info (json)      |
+|---------------|    has_one	|-----------------------|
+                                |       deleted_at      |
                                 |-----------------------|
 
 ```
