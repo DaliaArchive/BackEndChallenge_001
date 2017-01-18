@@ -1,5 +1,27 @@
 ##The inspector API
 
+#### To Setup
+
+###### locally:
+```bash
+git clone git@github.com:ronna-s/BackEndChallenge_001.git
+cd BackEndChallenge_001
+bundle install
+rake db:create
+rake db:migrate
+rackup
+```
+###### heroku:
+```bash
+git clone git@github.com:ronna-s/BackEndChallenge_001.git
+cd BackEndChallenge_001
+heroku create
+heroku buildpacks:set heroku/ruby
+git push heroku master
+heroku rake db:migrate
+```
+
+
 #### Technical interpretation of the requirements:
 
 1. **_Name vs. Id_**: From the requirement it seems that the name of the robot is the robot's id prefixed with 'XX' (e.g. 1=>XX1, 2=>XX2), so the name of the robot is not an editable field but a method. Therefore, lookup is done using the name while maintaining the advantage of the fast search using id.
