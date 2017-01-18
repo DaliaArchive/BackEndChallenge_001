@@ -3,7 +3,8 @@
 #### Requirements interpretation:
 
 1. **_Name vs. Id_**: From the requirement it seems that the name of the robot is the robot's id prefixed with 'XX' (e.g. 1=>XX1, 2=>XX2), so the name of the robot is not an editable field but a method. Therefore, lookup is done using the name while maintaining the advantage of the fast search using id.
-2. **_Limitation_**: From the requirement it seems there is a limitation that there is no way to delete an attribute key once it was added (the requirement is only to merge and override values, not remove fields), so under the current behavior the value can only be changed to nil but the key is not removed. If the option to remove a key completely is required - then a condition that upon changing a value to nil we remove the key must be added.
+2. **_History_**: if an update was performed but nothing has changed, the update should be omitted from the Robot's history.
+3. **_Updates limitation_**: From the requirement it seems there is a limitation that there is no way to delete an attribute once it was added (the requirement is only to merge and override values, not remove the actual field), so under the current behavior the value can only be changed to nil but the key is never removed. If the option to remove a key completely is required - then a condition that upon changing a value to nil we remove the key must be added.
 
 #### Choices:
 
