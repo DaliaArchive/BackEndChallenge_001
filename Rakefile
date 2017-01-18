@@ -1,6 +1,6 @@
 # Rakefile
 require 'sinatra/activerecord/rake'
-require_relative 'daycare'
+require_relative 'daycare/daycare'
 
 desc 'List defined routes'
 task 'routes' do
@@ -23,6 +23,6 @@ end
 
 namespace :db do
   task :load_config do
-    require "./daycare"
+    require "./daycare/daycare"
   end
 end
