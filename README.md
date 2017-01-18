@@ -6,9 +6,9 @@
 
 #### Choices:
 
-* **_`PostgreSQL`_** - obviously for json support to allow dynamic attributes
-* **_gem `paranoia`_** - for revisions (using soft deletes)
-* **_From `rails` to `Sinatra`_**: I started out with a rails app and two gems: paranioa and jsonapi-resources to have built in support for json api and for object revisioning. In the absence of any product requirements for such a bullet proof JSON api, I decided to throw away the json api gem magic along with rails entirely and use sinatra instead to keep the code small and fast.
+* **_PostgreSQL_** - obviously for json support to allow dynamic attributes
+* **_Paranoia rubygem_** - for revisions (using soft deletes)
+* **_From rails to Sinatra_**: I started out with a rails app and two gems: paranioa and jsonapi-resources to have built in support for json api and for object revisioning. In the absence of any product requirements for such a bullet proof JSON api, I decided to throw away the json api gem magic along with rails entirely and use sinatra instead to keep the code small and fast.
 
 #### Models
 
