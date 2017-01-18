@@ -1,8 +1,43 @@
-##Example:
+#### Requirements interpretation:
+
+* Name vs. Id: From the requirement it seems that the name of the robot is the robot's id prefixed with 'XX' (e.g. 1=>XX1, 2=>XX2), so the name of the robot is not an editable field but a method. Therefore, lookup is done using the name while maintaining the advantage of the fast search using id.
+
+* Limitation: From the requirement it seems there is a limitation that there is no way to delete an attribute key once it was added (the requirement is only to merge and override values, not remove fields), so under the current behavior the value can only be changed to nil but the key is not removed. If the option to remove a key completely is required - then a condition that upon changing a value to nil we remove the key must be added.
+
+#### Choices:
+
+I started out with a rails app and two gems: paranioa and jsonapi-resources to have built in support for json api and for object revisioning. In the absence of any product requirements for such a bullet proof api, I decided to throw rails away entirely and use sinatra instead to keep the code small and fast.
+
+#### Models
+
+I implemented ths using two models: one for the Robot - the other for the attribute revisions named RobotInfo. 
+The underlying databse is postgresql to allow storing and using jsons.
+
+On every change to the robot attributes, a new robot_info is created and the previous one is soft deleted (marked as deleted) using the paranoia gem.
+
+The action of replacing the robot info with another is done in the helper and is not an active record event, so we allow changes to be made to the data if needed, 
+
+
+
+```bash
+
+|---------------|    has_one	|-----------------------|
+|     Robot     |-------------->|       RobotInfo       |
+|---------------|               |-----------------------|
+                                |      info (json)      |
+                                |-----------------------|
+
+```
+
+rubysherpas/paranoia: for revisions 
+cerebris/jsonapi-resources and .
+parano
+
+#### Example:
 
 https://robots-daycare.herokuapp.com/robots
 
-##Routes:
+#### Routes:
 
 ```bash
 
