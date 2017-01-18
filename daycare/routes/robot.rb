@@ -16,7 +16,7 @@ class Daycare < Sinatra::Base
   # the following routes assume name = "XX"+id
 
   #show
-  get '/robots/:name' do #same as /robots/:name
+  get '/robots/:name' do #same as /robots/XX:id
     show
   end
 
