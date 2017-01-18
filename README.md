@@ -1,6 +1,11 @@
 ##The inspector API
 
-#### To Setup
+
+#### Working example:
+
+https://robots-daycare.herokuapp.com/robots (if you get forbidden, it's something with Heroku and the headers - probably the referrer, just copy and paste the link to the browser).
+
+#### Setup
 
 ###### locally:
 ```bash
@@ -56,11 +61,6 @@ The action of replacing the robot info with another is done directly and explici
                                 |-----------------------|
 
 ```
-
-#### Example:
-
-https://robots-daycare.herokuapp.com/robots (if you get forbidden, it's something with the headers - probably the referrer - and heroku, just copy and paste the link to the browser)
-
 
 **_Create_**
 ```bash
