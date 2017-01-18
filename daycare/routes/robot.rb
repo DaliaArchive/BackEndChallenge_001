@@ -40,31 +40,6 @@ class Daycare < Sinatra::Base
     destroy
   end
 
-  #show
-  get '/robots/XX:id' do
-    show
-  end
-
-  #history
-  get '/robots/XX:id/history' do
-    history
-  end
-
-  #update
-  put '/robots/XX:id' do
-    update
-  end
-
-  #update
-  patch '/robots/XX:id' do
-    update
-  end
-
-  #destroy
-  delete '/robots/XX:id' do
-    destroy
-  end
-
   error ::IllegalName do
     halt 400, json(status: 'error', message: 'Robot name is illegal - must be XX<id>')
   end
