@@ -39,7 +39,7 @@ parano
 
 https://robots-daycare.herokuapp.com/robots
 
-#### Routes:
+#### Routes (rake routes):
 
 ```bash
 
