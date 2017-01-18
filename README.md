@@ -17,7 +17,7 @@ The underlying databse is postgresql to allow storing and using jsons.
 
 On every change to the robot attributes, a new robot_info is created and the previous one is soft deleted (marked as deleted) using the paranoia gem.
 
-The action of replacing the robot info with another is done in the helper and is not an active record event, so we allow changes to be made to the data if needed, 
+The action of replacing the robot info with another is done directly and explicitely in the helper and is not an active record on save event.
 
 
 
