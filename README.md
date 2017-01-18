@@ -23,10 +23,10 @@ The action of replacing the robot info with another is done in the helper and is
 
                                 |-----------------------|
                                 |       RobotInfo       |
-|---------------|               |-----------------------|
-|     Robot     |-------------->|      info (json)      |
+|---------------|               |=======================|
+|     Robot     |-------------->|     + info(json)      |
 |---------------|    has_one	|-----------------------|
-                                |       deleted_at      |
+                                |     + deleted_at      |
                                 |-----------------------|
 
 ```
