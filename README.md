@@ -1,14 +1,14 @@
 #### Requirements interpretation:
 
-* Name vs. Id: From the requirement it seems that the name of the robot is the robot's id prefixed with 'XX' (e.g. 1=>XX1, 2=>XX2), so the name of the robot is not an editable field but a method. Therefore, lookup is done using the name while maintaining the advantage of the fast search using id.
+* **_Name vs. Id_**: From the requirement it seems that the name of the robot is the robot's id prefixed with 'XX' (e.g. 1=>XX1, 2=>XX2), so the name of the robot is not an editable field but a method. Therefore, lookup is done using the name while maintaining the advantage of the fast search using id.
 
-* Limitation: From the requirement it seems there is a limitation that there is no way to delete an attribute key once it was added (the requirement is only to merge and override values, not remove fields), so under the current behavior the value can only be changed to nil but the key is not removed. If the option to remove a key completely is required - then a condition that upon changing a value to nil we remove the key must be added.
+* **_Limitation_**: From the requirement it seems there is a limitation that there is no way to delete an attribute key once it was added (the requirement is only to merge and override values, not remove fields), so under the current behavior the value can only be changed to nil but the key is not removed. If the option to remove a key completely is required - then a condition that upon changing a value to nil we remove the key must be added.
 
 #### Choices:
 
-* `PostgreSQL` - obviously for json support to allow dynamic attributes
-* `paranoia` gem - for revisions (using soft deletes)
-* From `rails` to `Sinatra`: I started out with a rails app and two gems: paranioa and jsonapi-resources to have built in support for json api and for object revisioning. In the absence of any product requirements for such a bullet proof JSON api, I decided to throw away the json api gem magic along with rails entirely and use sinatra instead to keep the code small and fast.
+* **_`PostgreSQL`_** - obviously for json support to allow dynamic attributes
+* **_gem `paranoia`_** - for revisions (using soft deletes)
+* **_From `rails` to `Sinatra`_**: I started out with a rails app and two gems: paranioa and jsonapi-resources to have built in support for json api and for object revisioning. In the absence of any product requirements for such a bullet proof JSON api, I decided to throw away the json api gem magic along with rails entirely and use sinatra instead to keep the code small and fast.
 
 #### Models
 
