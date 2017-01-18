@@ -88,7 +88,7 @@ curl -H "Content-Type: application/json" -X PATCH -d '{}' https://robots-daycare
 ```json
 {"status":"success","id":3}
 ```
-**_History_ (only one udpate, even though we updated the entry twice)**
+**_History_ (only one udpate, because on the second update there were no changes to the robot)**
 ```json
 [{
 	"changes": {
