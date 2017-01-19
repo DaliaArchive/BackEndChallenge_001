@@ -15,3 +15,7 @@ group :development do
   gem 'tux'
 end
 
+group :test do
+  gem 'capybara'
+  gem 'rack-test'
+end

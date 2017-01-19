@@ -13,3 +13,7 @@ production:
   database: daycare_production
   username: daycare
   password: <%= ENV['DAYCARE_DATABASE_PASSWORD'] %>
+
+test:
+  <<: *default
+  database: daycare_test
