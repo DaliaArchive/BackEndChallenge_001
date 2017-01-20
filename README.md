@@ -2,7 +2,7 @@
 
 
 #### Working example - on Heroku
-https://robots-daycare.herokuapp.com/robots
+http://robots-daycare.herokuapp.com/robots
 important! The first request may take a few seconds because Heroku may have sent it to sleep and if you get forbidden, it's something with Heroku and the headers - probably the referrer, just copy and paste the link to the browser manually.
 
 #### Setup
