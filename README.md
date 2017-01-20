@@ -3,8 +3,7 @@
 
 #### Working example - on Heroku
 http://robots-daycare.herokuapp.com/robots
-important! The first request may take a few seconds because Heroku may have sent it to sleep and if you get forbidden, it's something with Heroku and the headers - probably the referrer, just copy and paste the link to the browser manually.
-
+important! The first request may take a few seconds because Heroku may have sent it to sleep.
 #### Setup
 
 ###### locally:
