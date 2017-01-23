@@ -1,0 +1,59 @@
+Robot Day Care Center API USAGE DOCUMENT
+___________________________________________________________________
+Content Type :
+   application/json
+
+Body:
+   Please pass json in Body
+   
+   Sample json body
+	{"robot":{"name":"robotname","robot_datas":{"color":"white"}}}
+
+NOTE : Content Type should be set to application/json for json data in body 
+
+API Requests:
+
+=> Listing robots
+   url: http://0.0.0.0:3000/robots/
+   method: GET
+   body : not needed
+   return type : json
+
+=> Show robot detail
+   url: http://0.0.0.0:3000/robots/showrobot/:name
+   method: GET
+   body : not needed
+   return type : json, response code 204 means the robot is not exist
+
+=> Creating robot
+   url: http://0.0.0.0:3000/robots/
+   method: Post
+   Body : json, name is unique and require
+   return code : expect 201, reponse 422 means useing exist robot name or not give a name value
+
+=> Updating robot
+   url: http://0.0.0.0:3000/robots/updaterobot/:name
+   method: PUT
+   Body : json, name is unique so can't be changed.
+   return code expect 200, if response 204 will be not exist robot name or not give a name value
+   
+=> Robot's history
+   url: http://0.0.0.0:3000/robots/history/:name
+   method: GET
+   body : not needed
+   return type : json
+   
+   
+DB columns
+	Table name : robots 
+	Columns:
+		name : string
+		robot_datas : text
+		
+		name is unique
+		
+	Table name : robothistories
+      robot_id : integer, reference to robot's id
+      status : string
+      field : string
+      value : string

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  size: 1
+  weight: 1
+  status: 
+  color: 
+  age: 1
+  eyes_number: 1
+  antenna_number: 1
+
+two:
+  name: MyString
+  size: 1
+  weight: 1
+  status: 
+  color: 
+  age: 1
+  eyes_number: 1
+  antenna_number: 1
