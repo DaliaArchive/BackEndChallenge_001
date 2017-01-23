@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: daycare_development
+  host: localhost
+
+production:
+  <<: *default
+  database: daycare_production
+  username: daycare
+  password: <%= ENV['DAYCARE_DATABASE_PASSWORD'] %>
+
+test:
+  <<: *default
+  database: daycare_test
