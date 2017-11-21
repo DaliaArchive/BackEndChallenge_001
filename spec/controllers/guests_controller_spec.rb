@@ -5,8 +5,36 @@ RSpec.describe GuestsController, type: :controller do
   describe "POST #update" do
     it "returns http success" do
       post :update, params: { name: 'foo' }
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(400)
     end
+
+    context "when record doesn't exist" do
+      it "creates it with given attributes" do
+        post :update, params: { name: 'nanobot',
+                                custom_attributes: { 'height' => '0.1mm', 'number of eyes' => '142' } }
+        expect(response).to have_http_status(:success)
+        guest = Guest.find_by_name('nanobot')
+        expect(guest).not_to be_nil
+        expect(guest.custom_attributes).to eq('height' => '0.1mm', 'number of eyes' => '142')
+      end
+    end
+
+    context "when record already exists" do
+      let!(:guest) { Fabricate(:guest, name: 'r2d2', custom_attributes: { shape: 'garbage_can', attitude: 'snarky' }) }
+
+      it "updates the existing record" do
+        post :update, params: { name: guest.name, custom_attributes: { height: '1m' } }
+        guest.reload
+        expect(guest.custom_attributes).to eq('shape' => 'garbage_can', 'attitude' => 'snarky', 'height' => '1m')
+      end
+
+      it "updates values that already exist" do
+        post :update, params: { name: guest.name, custom_attributes: { attitude: 'indifferent' } }
+        guest.reload
+        expect(guest.custom_attributes).to eq('shape' => 'garbage_can', 'attitude' => 'indifferent')
+      end
+    end
+
   end
 
   describe "GET #show" do
