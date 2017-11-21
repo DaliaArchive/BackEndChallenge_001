@@ -9,6 +9,6 @@ class RobotTest < ActiveSupport::TestCase
     attribute_color = create(:robot_attribute, :color, robot: @robot)
     attribute_weight = create(:robot_attribute, :weight, robot: @robot)
 
-    assert_equal(@robot.attributes_hash, 'color' => attribute_color.value, 'weight' => attribute_weight.value)
+    assert_equal({ 'color' => attribute_color.value, 'weight' => attribute_weight.value }, @robot.attributes_hash)
   end
 end
