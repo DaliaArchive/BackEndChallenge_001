@@ -16,6 +16,8 @@ class GuestsController < ApplicationController
   end
 
   def index
+    # TODO might be able to improve this with a postgres JSON query
+    # (quick research didn't reveal an obvious method for that, however)
     guests = Guest.select(:id, :name, :history).map do |guest|
       # The datetime format we use also sorts well alphabetically :)
       last_update = guest.history.map { |h| h['datetime'] }.sort.last
@@ -38,6 +40,13 @@ class GuestsController < ApplicationController
   end
 
   def update_guest
+    # NOTE: This logic could be moved into the model. I'd leave it here for
+    #       now until additional complexity is needed. I prefer to try to keep
+    #       models thin, and callbacks can sometimes be very hairy. For now,
+    #       this is the only place where Guest history is modified. If that
+    #       were to change, I would move this either to the model, or even
+    #       better, into its own policy class. Doing is also one way that
+    #       we can keep complexity out of this controller.
     guest = Guest.find_or_initialize_by(name: params[:name])
     guest.custom_attributes ||= {}
     old_attributes = guest.custom_attributes.dup
