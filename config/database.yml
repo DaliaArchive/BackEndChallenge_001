@@ -1,0 +1,19 @@
+development:
+  adapter: 'postgresql'
+  database: <%= ENV['DATABASE_NAME_DEVELOPMENT'] || 'inspector_api_development' %>
+  username: <%= ENV['DATABASE_USERNAME'] || ENV['USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>
+
+test: &test
+  adapter: 'postgresql'
+  database: <%= ENV['DATABASE_NAME_TEST'] || 'inspector_api_test' %>
+  username: <%= ENV['DATABASE_USERNAME'] || ENV['USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>
+
+production:
+  # Heroku replaces this file. See
+  # config/initializers/database_connection.rb
+  # and
+  # config/makara.yml
