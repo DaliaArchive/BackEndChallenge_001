@@ -27,6 +27,7 @@ group :development, :test do
   gem 'fabrication'
   gem 'nyan-cat-formatter'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'timecop'
 end
 
