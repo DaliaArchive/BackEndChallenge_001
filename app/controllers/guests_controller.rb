@@ -1,5 +1,7 @@
 class GuestsController < ApplicationController
 
+  before_action :require_guest, only: [:show, :history]
+
   def update
     if params[:name] && params[:custom_attributes]
       update_guest
@@ -10,12 +12,7 @@ class GuestsController < ApplicationController
   end
 
   def show
-    guest = Guest.find_by_name(params[:name])
-    if guest
-      render json: guest
-    else
-      render :json => { error: 'not found' }, status: 404
-    end
+    render json: @guest
   end
 
   def index
@@ -28,15 +25,17 @@ class GuestsController < ApplicationController
   end
 
   def history
-    guest = Guest.find_by_name(params[:name])
-    if guest
-      render json: guest.history
-    else
-      render :json => { error: 'not found' }, status: 404
-    end
+    render json: @guest.history
   end
 
   protected
+
+  def require_guest
+    @guest = Guest.find_by_name(params[:name])
+    unless @guest
+      render :json => { error: 'not found' }, status: 404
+    end
+  end
 
   def update_guest
     guest = Guest.find_or_initialize_by(name: params[:name])
