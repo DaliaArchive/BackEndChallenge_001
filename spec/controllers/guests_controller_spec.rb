@@ -90,7 +90,11 @@ RSpec.describe GuestsController, type: :controller do
     end
 
     it "returns all of the guests" do
-      guests = (0..2).map {|i| Fabricate(:guest) }
+      guests = (0..2).map do |i|
+        Fabricate(:guest, history: [{'datetime' => '2113-12-19'},
+                                    {'datetime' => '2113-12-20'},
+                                    {'datetime' => '2113-12-18'}])
+      end
       get :index
 
       body = JSON.parse(response.body)
@@ -100,6 +104,7 @@ RSpec.describe GuestsController, type: :controller do
         guest_json = body['guests'][i]
         expect(guest_json['id']).to eq guest.id
         expect(guest_json['name']).to eq guest.name
+        expect(guest_json['last_update']).to eq '2113-12-20'
       end
     end
   end

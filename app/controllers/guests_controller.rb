@@ -29,7 +29,12 @@ class GuestsController < ApplicationController
   end
 
   def index
-    render json: { guests: Guest.select(:id, :name) }
+    guests = Guest.select(:id, :name, :history).map do |guest|
+      # The datetime format we use also sorts well alphabetically :)
+      last_update = guest.history.map { |h| h['datetime'] }.sort.last
+      { id: guest.id, name: guest.name, last_update: last_update }
+    end
+    render json: { guests: guests }
   end
 
   def history
