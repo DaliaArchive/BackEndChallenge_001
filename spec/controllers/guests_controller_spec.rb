@@ -12,7 +12,16 @@ RSpec.describe GuestsController, type: :controller do
   describe "GET #show" do
     it "returns http success" do
       get :show, params: { name: 'foo' }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns the guests information" do
+      guest = Fabricate(:guest)
+      get :show, params: { name: guest.name }
       expect(response).to have_http_status(:success)
+      body = JSON.parse(response.body)
+      expect(body['name']).to eq guest.name
+      expect(body['custom_attributes']).to eq guest.custom_attributes
     end
   end
 

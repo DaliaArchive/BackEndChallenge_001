@@ -3,6 +3,12 @@ class GuestsController < ApplicationController
   end
 
   def show
+    guest = Guest.find_by_name(params[:name])
+    if guest
+      render json: guest
+    else
+      render :json => { error: 'not found' }, status: 404
+    end
   end
 
   def index
