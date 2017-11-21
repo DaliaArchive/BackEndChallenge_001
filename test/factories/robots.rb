@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :robot do
-    name { Faker::Name.name }
+    name { Faker::Name.title }
 
     factory :robot_with_four_attributes do
       after(:create) do |robot|
