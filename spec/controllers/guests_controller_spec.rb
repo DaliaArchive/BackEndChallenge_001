@@ -3,6 +3,14 @@ require 'rails_helper'
 RSpec.describe GuestsController, type: :controller do
 
   describe "POST #update" do
+    before do
+      Timecop.freeze(Time.utc(2113, 12, 19, 12, 0, 0))
+    end
+
+    after do
+      Timecop.return
+    end
+
     it "returns http success" do
       post :update, params: { name: 'foo' }
       expect(response).to have_http_status(400)
@@ -17,6 +25,18 @@ RSpec.describe GuestsController, type: :controller do
         expect(guest).not_to be_nil
         expect(guest.custom_attributes).to eq('height' => '0.1mm', 'number of eyes' => '142')
       end
+
+      it "saves an entry in the guest's history with type create" do
+          post :update, params: { name: 'nanobot',
+                                  custom_attributes: { 'height' => '0.1mm'} }
+          guest = Guest.find_by_name('nanobot')
+          expect(guest.history.length).to eq 1
+          expect(guest.history.first).to eq('type' => 'create',
+                                            'datetime' => '2113-12-19T12:00:00.000Z',
+                                            'changes' => { 'old' => {},
+                                                           'new' => { 'height' => '0.1mm' } })
+      end
+
     end
 
     context "when record already exists" do
@@ -32,6 +52,16 @@ RSpec.describe GuestsController, type: :controller do
         post :update, params: { name: guest.name, custom_attributes: { attitude: 'indifferent' } }
         guest.reload
         expect(guest.custom_attributes).to eq('shape' => 'garbage_can', 'attitude' => 'indifferent')
+      end
+
+      it "saves an entry in the guest's history with type update" do
+        post :update, params: { name: guest.name, custom_attributes: { attitude: 'indifferent' } }
+        guest.reload
+        expect(guest.history.length).to eq 1
+        expect(guest.history.first).to eq('type' => 'update',
+                                          'datetime' => '2113-12-19T12:00:00.000Z',
+                                          'changes' => { 'old' => {'shape' => 'garbage_can', 'attitude' => 'snarky'},
+                                                         'new' => {'shape' => 'garbage_can', 'attitude' => 'indifferent'} })
       end
     end
 
@@ -78,6 +108,19 @@ RSpec.describe GuestsController, type: :controller do
     it "returns http not found when given a bad guest name" do
       get :history, params: { name: 'foo' }
       expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns the history of a guest" do
+      guest = Fabricate(:guest, name: "scholar_bot", history: [{'type' => 'create',
+                                                                'datetime' => '2113-12-19T12:00:00.000Z',
+                                                                'changes' => { 'old' => {},
+                                                                               'new' => { 'foo' => 'bar' } } }])
+      get :history, params: { name: guest.name }
+      body = JSON.parse(response.body)
+      expect(body).to eq([{'type' => 'create',
+                                     'datetime' => '2113-12-19T12:00:00.000Z',
+                                     'changes' => { 'old' => {},
+                                                    'new' => { 'foo' => 'bar' } } }])
     end
   end
 
