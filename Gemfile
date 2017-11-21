@@ -43,3 +43,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'jbuilder'
+gem 'audited', '~> 4.5'
