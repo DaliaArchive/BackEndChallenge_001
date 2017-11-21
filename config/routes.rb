@@ -1,11 +1,6 @@
 Rails.application.routes.draw do
-  get 'guests/update'
-
-  get 'guests/show'
-
-  get 'guests/index'
-
-  get 'guests/history'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  post 'guests/:name', to: 'guests#update'
+  get  'guests/:name', to: 'guests#show'
+  get  'guests/index', to: 'guests#index'
+  get  'guests/history/:name', to: 'guests#history'
 end

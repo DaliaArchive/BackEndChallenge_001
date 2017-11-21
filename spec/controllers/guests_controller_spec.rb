@@ -2,16 +2,16 @@ require 'rails_helper'
 
 RSpec.describe GuestsController, type: :controller do
 
-  describe "GET #update" do
+  describe "POST #update" do
     it "returns http success" do
-      get :update
+      post :update, params: { name: 'foo' }
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET #show" do
     it "returns http success" do
-      get :show
+      get :show, params: { name: 'foo' }
       expect(response).to have_http_status(:success)
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe GuestsController, type: :controller do
 
   describe "GET #history" do
     it "returns http success" do
-      get :history
+      get :history, params: { name: 'foo' }
       expect(response).to have_http_status(:success)
     end
   end
