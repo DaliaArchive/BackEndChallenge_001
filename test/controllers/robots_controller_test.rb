@@ -92,4 +92,45 @@ class RobotsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response 200
   end
+
+  test 'history should give proper message if robot does not exist' do
+    get robot_history_url(non_existent_robot_name), as: :json
+
+    assert_response :not_found
+    assert_equal(response.parsed_body['message'], 'Robot not found')
+  end
+
+  test 'history should return robot history if robot exists' do
+    robot = create(:robot_with_four_attributes)
+
+    travel 1.hour
+    params_one = { robot: { age: '20years', weight: '50kg' } }
+    put robot_url(robot.name), params: params_one, as: :json
+
+    travel 1.day
+    params_two = { robot: { weight: '10kg' } }
+    put robot_url(robot.name), params: params_two, as: :json
+
+    travel 1.hour
+    params_three = { robot: { language: 'German', material: 'Iron' } }
+    put robot_url(robot.name), params: params_three, as: :json
+
+    get robot_history_url(robot.name), as: :json
+
+    assert_equal(4, response.parsed_body.count)
+
+    robot_created_time = robot.created_at.to_formatted_s(:db)
+    weight_attribute_updated_time = robot.robot_attributes.find_by(key: 'weight').updated_at.to_formatted_s(:db)
+    language_attribute_updated_time = robot.robot_attributes.find_by(key: 'language').updated_at.to_formatted_s(:db)
+
+    assert_includes(response.parsed_body, robot_created_time)
+    assert_includes(response.parsed_body, weight_attribute_updated_time)
+
+    assert_equal('create', response.parsed_body[robot_created_time]['type'])
+    assert_equal('update', response.parsed_body[weight_attribute_updated_time]['type'])
+    assert_equal({ '50kg' => '10kg' }, response.parsed_body[weight_attribute_updated_time]['changes']['weight'])
+    assert_equal({ '' => 'German' }, response.parsed_body[language_attribute_updated_time]['changes']['language'])
+
+    assert_response 200
+  end
 end
