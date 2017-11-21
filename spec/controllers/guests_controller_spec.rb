@@ -1,0 +1,47 @@
+require 'rails_helper'
+
+RSpec.describe GuestsController, type: :controller do
+
+  describe "GET #update" do
+    it "returns http success" do
+      get :update
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe "GET #show" do
+    it "returns http success" do
+      get :show
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe "GET #index" do
+    it "returns http success" do
+      get :index
+      expect(response).to have_http_status(:success)
+    end
+
+    it "returns all of the guests" do
+      guests = (0..2).map {|i| Fabricate(:guest) }
+      get :index
+
+      body = JSON.parse(response.body)
+      expect(body['guests'].length).to eq 3
+
+      guests.each_with_index do |guest, i|
+        guest_json = body['guests'][i]
+        expect(guest_json['id']).to eq guest.id
+        expect(guest_json['name']).to eq guest.name
+      end
+    end
+  end
+
+  describe "GET #history" do
+    it "returns http success" do
+      get :history
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+end
