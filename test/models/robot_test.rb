@@ -1,7 +1,14 @@
 require 'test_helper'
 
 class RobotTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  setup do
+    @robot = create(:robot)
+  end
+
+  test 'attributes_hash to return hash of attributes' do
+    attribute_color = create(:robot_attribute, :color, robot: @robot)
+    attribute_weight = create(:robot_attribute, :weight, robot: @robot)
+
+    assert_equal(@robot.attributes_hash, 'color' => attribute_color.value, 'weight' => attribute_weight.value)
+  end
 end
