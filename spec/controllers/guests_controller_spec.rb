@@ -38,7 +38,7 @@ RSpec.describe GuestsController, type: :controller do
   end
 
   describe "GET #show" do
-    it "returns http success" do
+    it "returns http not found when given a bad guest name" do
       get :show, params: { name: 'foo' }
       expect(response).to have_http_status(:not_found)
     end
@@ -75,9 +75,9 @@ RSpec.describe GuestsController, type: :controller do
   end
 
   describe "GET #history" do
-    it "returns http success" do
+    it "returns http not found when given a bad guest name" do
       get :history, params: { name: 'foo' }
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(:not_found)
     end
   end
 
