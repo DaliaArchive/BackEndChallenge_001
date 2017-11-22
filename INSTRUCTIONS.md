@@ -3,16 +3,22 @@
 ## Description
 
 Robots' daycare center provides Apis to manage Robots. It provides 4 different kind of APIs to list all robots, view details of a robot, make changes to a robot and view the history of changes done to a robot.
+## Demo
+
+A demo of the apis can be found hosted on Heroku: 
+https://robots-daycare-centre.herokuapp.com/robots
 
 ## API Details
 
 ### Robots Listing:
 Returns list of robots.
 #### GET /robots
+https://robots-daycare-centre.herokuapp.com/robots
 
 ### Robot Details:
 Returns details of the robot for the given name if it exists, otherwise gives missing message.
 #### GET /robots/[name]
+https://robots-daycare-centre.herokuapp.com/robots/RobotThree
 
 ### Robot Create or Update:
 Create robot for the given name if it doesn't already exist, otherwise updates it.
@@ -24,10 +30,13 @@ Create robot for the given name if it doesn't already exist, otherwise updates i
   }
 }
 
+curl -X PUT -H "Content-Type: application/json" -d '{"robot":{"framework":"Rails"}}' "https://robots-daycare-centre.herokuapp.com/robots/RailsRobot"
+
 
 ### Robot History:
 Returns history of changes done to the robot for the given name if it exists, otherwise gives missing message.
 #### GET /robots/[name]/history
+https://robots-daycare-centre.herokuapp.com/robots/RobotThree/history
 
 ## Testing:
 rails test
