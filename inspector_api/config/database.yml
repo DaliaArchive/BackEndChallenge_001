@@ -1,0 +1,17 @@
+
+default: &default
+  adapter: postgresql
+  username: inspector_api
+  encoding: unicode
+  password: 
+  pool: 5
+  timeout: 5000
+  host: localhost
+
+development:
+  <<: *default
+  database: inspector_api_dev
+
+test:
+  <<: *default
+  database: inspector_api_test
